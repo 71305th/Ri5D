@@ -13,7 +13,12 @@ import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Chassis.PathFollowingRamsete;
+import frc.robot.commands.Grabber.AutoGrabClose;
+import frc.robot.commands.Grabber.AutoGrabOpen;
 import frc.robot.commands.Grabber.GrabAndRelease;
+import frc.robot.commands.Chassis.AutoElbowMove;
+import frc.robot.commands.Chassis.AutoMove;
+import frc.robot.commands.Chassis.AutoRotate;
 import frc.robot.commands.Chassis.LockPID;
 import frc.robot.commands.Grabber.WheelsTurnAndStop;
 import frc.robot.subsystems.ArmSubsystem;
@@ -109,9 +114,20 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    // return new SequentialCommandGroup(
+    //   new PathFollowingRamsete(m_drive, "New Path", true), 
+    //   m_setPoint);
     return new SequentialCommandGroup(
-      new PathFollowingRamsete(m_drive, "New Path", true), 
-      m_setPoint);
+      new AutoMove(m_drive, 5),
+      new AutoGrabOpen(m_grabPCM, m_grabWheel),
+      new AutoElbowMove(m_elbow, 0.5),
+      new AutoGrabClose(m_grabPCM, m_grabWheel),
+      new AutoElbowMove(m_elbow, 0),
+      new AutoMove(m_drive, 0),
+      new AutoRotate(m_drive, -180),
+      new AutoElbowMove(m_elbow, 0.2),
+      new AutoGrabOpen(m_grabPCM, m_grabWheel)
+    );
   }
 
   public void testMotor(){

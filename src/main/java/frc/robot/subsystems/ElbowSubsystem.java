@@ -34,5 +34,17 @@ public class ElbowSubsystem extends SubsystemBase {
     m_elbowMotor.set(0);
   }
 
+  public double getArmAngPos() {
+    return m_elbowMotor.getEncoder().getPosition() * 2 * Math.PI / ElbowConstants.kEncoderCPR / ElbowConstants.kGearRatio;
+  }
+
+  public double getArmAngVel() {
+    return m_elbowMotor.getEncoder().getVelocity() * 2 * Math.PI / ElbowConstants.kEncoderCPR / ElbowConstants.kGearRatio;
+  }
+
+  public void resetEncoders() {
+   m_elbowMotor.getEncoder().setPosition(0);
+  }
+
   
 }

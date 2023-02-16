@@ -13,7 +13,7 @@ import frc.robot.Constants.ArmConstants;
 public class ArmSubsystem extends SubsystemBase {
 
   private final CANSparkMax m_armMotor = new CANSparkMax(ArmConstants.motorID, MotorType.kBrushless);
-  
+
   /** Creates a new LufySubsystem. */
   public ArmSubsystem() {
     m_armMotor.setInverted(false);
@@ -25,23 +25,23 @@ public class ArmSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void run(double speed){
+  public void run(double speed) {
     m_armMotor.set(speed);
   }
-  
-  public void stop(){
+
+  public void stop() {
     m_armMotor.set(0);
   }
 
-  public double getArmPos(){
-    return m_armMotor.getEncoder().getPosition();
+  public double getArmAngPos() {
+    return m_armMotor.getEncoder().getPosition() * 2 * Math.PI / ArmConstants.kEncoderCPR / ArmConstants.kGearRatio;
   }
 
-  public double getArmVel(){
-    return m_armMotor.getEncoder().getVelocity();
+  public double getArmAngVel() {
+    return m_armMotor.getEncoder().getVelocity() * 2 * Math.PI / ArmConstants.kEncoderCPR / ArmConstants.kGearRatio;
   }
 
-  public void resetEncoders(){
+  public void resetEncoders() {
     m_armMotor.getEncoder().setPosition(0);
   }
 }

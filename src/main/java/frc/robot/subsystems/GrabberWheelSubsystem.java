@@ -7,22 +7,40 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.GrabberConstants;
+import frc.robot.Constants.OIConstants;
 
 public class GrabberWheelSubsystem extends SubsystemBase {
 
   private final CANSparkMax m_grabberMotor = new CANSparkMax(GrabberConstants.motorID, MotorType.kBrushless);
+  private final Joystick joystick = new Joystick(OIConstants.operatorController);
+
+  private boolean lastButtonState = false;
+  private boolean state = false;
 
   /** Creates a new GrabberWheelSubsystem. */
   public GrabberWheelSubsystem() {
     m_grabberMotor.setInverted(false);
     m_grabberMotor.getEncoder().setPosition(0);
+    this.lastButtonState = false;
+    this.state = false;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    boolean buttonInput = this.joystick.getRawButtonPressed(OIConstants.Btn_RB);
+    if(this.lastButtonState == true && buttonInput == false){
+      this.state = !this.state;
+    }
+    this.lastButtonState = buttonInput;
+    if (this.state){
+      this.rollRun(0.05);
+    } else {
+      this.rollStop();
+    }
   }
 
   public void rollRun(double speed){

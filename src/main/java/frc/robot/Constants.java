@@ -5,13 +5,18 @@
 package frc.robot;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
@@ -23,12 +28,13 @@ public final class Constants {
         public static final int motorRearRight = 4;
 
         // Encoders
-        public static final int kLeftEncoderPort = 3;
-        public static final int kRightEncoderPort = 4;
-        public static final double kEncoderCPR = 4096;
-        public static final double kWheelDiameterMeters = 0.097;
+        // public static final int kLeftEncoderPort = 3;
+        // public static final int kRightEncoderPort = 4;
+        public static final double kEncoderCPR = 42;
+        public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
         public static final double kWheelCircumference = kWheelDiameterMeters * Math.PI;
-        public static final double kDistancePerPulse = kWheelCircumference / kEncoderCPR * 100;
+        public static final double kGearRatio = 25 / 12;
+        public static final double kDistancePerPulse = kWheelCircumference / kEncoderCPR / kGearRatio;
         // distancePerPulse = wheelPerimeter / EncoderCPR
 
         // Trajectory Constraints
@@ -38,21 +44,22 @@ public final class Constants {
 
         // Chassis Related
         public static final double kTrackWidthmeters = 0.595;
-        public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidthmeters);
+        public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
+                kTrackWidthmeters);
         public static final double chassisArcadeSpdScaler = 1;
         public static final double chassisArcadeRotScaler = 1;
         public static final double chassisTankScaler = 0.5;
     }
-    
-    public final class PIDConstants {
+
+    public static final class PIDConstants {
         // Charge Station
         public static final double kP_Lock = 1.0;
         public static final double kI_Lock = 0.05;
         public static final double kD_Lock = 0.000;
         public static final double iLimit_Lock = 0.36;
     }
-    
-    public final class AutoConstants {
+
+    public static final class AutoConstants {
         // Feed forward shit
         public static final double kRamseteB = 2.5;
         public static final double kRamseteZeta = 3.0;
@@ -62,26 +69,31 @@ public final class Constants {
         public static final double kMaxAccelerationMetersPerSecondSquared = 5.01;
     }
 
-    public final class ArmConstants {
+    public static final class ArmConstants {
         public static final double armSpeedScaler = 0.3;
         public static final int motorID = 14;
-    }
-    
 
-    public final class ElbowConstants {
+        public static final double kEncoderCPR = 42;
+        public static final double kGearRatio = 36 * 72 / 48;
+    }
+
+    public static final class ElbowConstants {
         public static final int motorID = 12;
         public static final int cancoderID = 0;
         public static final double elbowSpeedScaler = 0.3;
+
+        public static final double kEncoderCPR = 42;
+        public static final double kGearRatio = 40 * 72 / 20;
     }
 
-    public final class GrabberConstants {
+    public static final class GrabberConstants {
         public static final int compressorID = 0;
         public static final int ForwardChannel = 6;
         public static final int ReverseChannel = 7;
         public static final int motorID = 15;
     }
 
-    public final class ElevatorConstants {
+    public static final class ElevatorConstants {
         public static final int leftMotorID = 9;
         public static final int rightMotorID = 8;
         public static final double elevatorUpSpeedScaler = 0.5;
@@ -92,10 +104,10 @@ public final class Constants {
         public static final int rightDownChannel = 3;
     }
 
-    public final class OIConstants {
+    public static final class OIConstants {
         public static final int driverController = 0;
         public static final int operatorController = 1;
-        
+
         public static final int leftStick_X = 0;
         public static final int leftStick_Y = 1;
         public static final int trigger_L = 2;
@@ -108,7 +120,7 @@ public final class Constants {
         public static final int Btn_Y = 4;
         public static final int Btn_LB = 5;
         public static final int Btn_RB = 6;
-        public static final int Btn_LS = 9;  
+        public static final int Btn_LS = 9;
         public static final int Btn_RS = 10;
     }
 }

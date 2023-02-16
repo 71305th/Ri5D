@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -34,9 +32,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final AHRS m_gyro = new AHRS(Port.kMXP);
 
-  private final WPI_CANCoder m_leftEncoder = new WPI_CANCoder(DriveConstants.kLeftEncoderPort);
-  private final WPI_CANCoder m_rightEncoder = new WPI_CANCoder(DriveConstants.kRightEncoderPort);
-
   DifferentialDriveOdometry m_odometry = 
     new DifferentialDriveOdometry(m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());
 
@@ -59,9 +54,9 @@ public class DriveSubsystem extends SubsystemBase {
       new DifferentialDriveOdometry(m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());   
       SmartDashboard.putNumber("LeftDis", getLeftRelativeDistance());
       SmartDashboard.putNumber("RightDis", getRightRelativeDistance());
-      // SmartDashboard.putNumber("Heading", getHeading());
-      // SmartDashboard.putNumber("PoseX", getPose().getX());
-      // SmartDashboard.putNumber("PoseY", getPose().getY());
+      SmartDashboard.putNumber("Heading", getHeading());
+      SmartDashboard.putNumber("PoseX", getPose().getX());
+      SmartDashboard.putNumber("PoseY", getPose().getY());
       SmartDashboard.putNumber("LeftVel", getLeftVelocity());
       SmartDashboard.putNumber("RightVel", getRightVelocity());
     }
@@ -76,13 +71,19 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public double getLeftRelativeDistance() {
-    return m_leftEncoder.getPosition() * DriveConstants.kDistancePerPulse;
+    double RLencoderCount = m_motorRearLeft.getEncoder().getPosition();
+    double FLencoderCount = m_motorFrontLeft.getEncoder().getPosition();
+    double averageCount = (RLencoderCount+FLencoderCount)/2;
+    return averageCount * DriveConstants.kDistancePerPulse;
   }
 
   public double getRightRelativeDistance() {
-    return m_rightEncoder.getPosition() * DriveConstants.kDistancePerPulse;
+    double RRencoderCount = m_motorRearRight.getEncoder().getPosition();
+    double FRencoderCount = m_motorFrontRight.getEncoder().getPosition();
+    double averageCount = (RRencoderCount+FRencoderCount)/2;
+    return averageCount * DriveConstants.kDistancePerPulse;
   }
-
+/*
   public double getleftAbsoluteDistance() {
     return m_leftEncoder.getAbsolutePosition() * DriveConstants.kDistancePerPulse;
   }
@@ -90,13 +91,19 @@ public class DriveSubsystem extends SubsystemBase {
   public double getRightAbsoluteDistance() {
     return m_rightEncoder.getAbsolutePosition() * DriveConstants.kDistancePerPulse;
   }
-
+*/
   public double getLeftVelocity() {
-    return m_leftEncoder.getVelocity() * DriveConstants.kDistancePerPulse;
+    double RLencoderV = m_motorRearLeft.getEncoder().getVelocity();
+    double FLencoderV = m_motorFrontLeft.getEncoder().getVelocity();
+    double averageV = (RLencoderV+FLencoderV)/2;
+    return averageV * DriveConstants.kDistancePerPulse;
   }
 
   public double getRightVelocity() {
-    return m_rightEncoder.getVelocity() * DriveConstants.kDistancePerPulse;
+    double RRencoderV = m_motorRearRight.getEncoder().getVelocity();
+    double FRencoderV = m_motorFrontRight.getEncoder().getVelocity();
+    double averageV = (RRencoderV+FRencoderV)/2;
+    return averageV * DriveConstants.kDistancePerPulse;
   }
 
   public void arcadeDrive(double speed, double rotation) {
@@ -130,8 +137,10 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    m_leftEncoder.setPosition(0, 50);
-    m_rightEncoder.setPosition(0,50);
+    m_motorRearLeft.getEncoder().setPosition(0.0);
+    m_motorFrontLeft.getEncoder().setPosition(0.0);
+    m_motorRearRight.getEncoder().setPosition(0.0);
+    m_motorFrontRight.getEncoder().setPosition(0.0);
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
@@ -153,15 +162,6 @@ public class DriveSubsystem extends SubsystemBase {
   public double getAverageEncoderRelativeDistance() {
     return (getLeftRelativeDistance() + getRightRelativeDistance()) / 2.0;
   }
-
-  public CANCoder getLeftEncoder() {
-    return m_leftEncoder;
-  }
-
-  public CANCoder getRightEncoder() {
-    return m_rightEncoder;
-  }
-
   /**
    * Sets the max output of the drive. Useful for scaling the drive to drive more slowly.
    *
