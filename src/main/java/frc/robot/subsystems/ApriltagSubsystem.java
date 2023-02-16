@@ -28,13 +28,12 @@ public class ApriltagSubsystem extends SubsystemBase {
   PhotonTrackedTarget target;
 
   //define information of the target
-
-  double yaw;
-  double pitch;
-  double area;
-  double skew;
-  int targetID;
-  double poseAmbiguity;
+  private double yaw;
+  private double pitch;
+  private double area;
+  private double skew;
+  private int targetID;
+  private double poseAmbiguity;
 
   Transform3d bestCameraToTarget;
   Transform3d alternateCameraToTarget;
