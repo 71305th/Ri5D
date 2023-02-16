@@ -22,13 +22,18 @@ import frc.robot.commands.Chassis.AutoRotate;
 import frc.robot.commands.Chassis.LockPID;
 import frc.robot.commands.Elevator.OneButtonRunUpDown;
 import frc.robot.commands.Grabber.WheelsTurnAndStop;
+import frc.robot.commands.Image.ApriltagField;
+import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ElbowSubsystem;
 import frc.robot.subsystems.GrabberPCMSubsystem;
 import frc.robot.subsystems.GrabberWheelSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -52,6 +57,7 @@ public class RobotContainer {
   private final ElbowSubsystem m_elbow = new ElbowSubsystem();
   private final GrabberPCMSubsystem m_grabPCM = new GrabberPCMSubsystem();
   private final GrabberWheelSubsystem m_grabWheel = new GrabberWheelSubsystem();
+  private final ApriltagSubsystem m_apriltag = new ApriltagSubsystem();
 
   // Commands
   private final LockPID m_setPoint = new LockPID(m_drive);
@@ -126,7 +132,12 @@ public class RobotContainer {
     // return new SequentialCommandGroup(
     //   new PathFollowingRamsete(m_drive, "New Path", true), 
     //   m_setPoint);
-    return new SequentialCommandGroup(
+
+
+    return new ParallelCommandGroup(
+      new ApriltagField(m_apriltag),
+
+      new SequentialCommandGroup( 
       new AutoMove(m_drive, 5),
       new AutoGrabOpen(m_grabPCM, m_grabWheel),
       new AutoElbowMove(m_elbow, 0.5),
@@ -136,7 +147,9 @@ public class RobotContainer {
       new AutoRotate(m_drive, -180),
       new AutoElbowMove(m_elbow, 0.2),
       new AutoGrabOpen(m_grabPCM, m_grabWheel)
-    );
+      )
+      
+      );
   }
 
   public void testMotor(){
