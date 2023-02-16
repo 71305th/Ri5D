@@ -20,6 +20,7 @@ import frc.robot.commands.Chassis.AutoElbowMove;
 import frc.robot.commands.Chassis.AutoMove;
 import frc.robot.commands.Chassis.AutoRotate;
 import frc.robot.commands.Chassis.LockPID;
+import frc.robot.commands.Elevator.OneButtonRunUpDown;
 import frc.robot.commands.Grabber.WheelsTurnAndStop;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -56,6 +57,7 @@ public class RobotContainer {
   private final LockPID m_setPoint = new LockPID(m_drive);
   private final GrabAndRelease m_grabAndRelease = new GrabAndRelease(m_grabPCM);
   private final WheelsTurnAndStop m_wheelsTurnAndStop = new WheelsTurnAndStop(m_grabWheel);
+  private final OneButtonRunUpDown m_oneButtonRunUpDown = new OneButtonRunUpDown(m_elevator);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -104,8 +106,15 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // new JoystickButton(driverJoystick, OIConstants.Btn_A).onTrue(m_setPoint);
     // new JoystickButton(driverJoystick, OIConstants.Btn_B).onTrue(new RunCommand( () -> {m_drive.resetEncoders();}, m_drive));
+
+    // make the grabber grab and release
     new JoystickButton(operatorJoystick, OIConstants.Btn_LB).onTrue(m_grabAndRelease);
+
+    // make the wheels on the grabber turn and stop
     new JoystickButton(operatorJoystick, OIConstants.Btn_RB).onTrue(m_wheelsTurnAndStop);
+
+    // make the elevator go up or down in a click
+    new JoystickButton(operatorJoystick, OIConstants.Btn_X).onTrue(m_oneButtonRunUpDown);
   }
 
   /**
