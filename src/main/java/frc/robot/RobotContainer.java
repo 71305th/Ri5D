@@ -100,11 +100,11 @@ public class RobotContainer {
     }, mElbow));
 
     //apriltag
-    m_apriltag.setDefaultCommand(new RunCommand(()->{
-      if(operatorJoystick.getRawButtonPressed(OIConstants.Btn_B)){
-        m_apriltag.getPosByApriltag();
+    mApriltag.setDefaultCommand(new RunCommand(()->{
+      if(mOperatorJoystick.getRawButtonPressed(OIConstants.Btn_B)){
+        mApriltag.getPosByApriltag();
       }
-    }, m_apriltag));
+    },mApriltag));
 
     // Configure the button bindings
     configureButtonBindings();
