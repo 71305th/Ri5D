@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
@@ -57,6 +61,14 @@ public final class Constants {
         public static final double kI_Lock = 0.05;
         public static final double kD_Lock = 0.000;
         public static final double iLimit_Lock = 0.36;
+
+        // Apriltag constants
+        public static final double kP_foward = 0.3;
+        public static final double kI_foward = 0;
+        public static final double kD_foward = 0;
+        public static final double kP_turn = 0.3;
+        public static final double kI_turn = 0;
+        public static final double kD_turn = 0;
     }
 
     public static final class AutoConstants {
@@ -103,6 +115,31 @@ public final class Constants {
         public static final int rightUpChannel = 2;
         public static final int rightDownChannel = 3;
     }
+
+    public static final class ApriltagConstants {
+        // Field
+        public static final double kX = 0.1;
+        public static final double kY = 0.1;
+    }
+
+    public static final class Field {
+        /**
+         *  length: meters 
+         * blue aliance (0,0)
+         * @param targetID
+         * @param position
+         */
+         public static Map<Integer, Translation2d> fieldmMap = new HashMap<>(){{
+             put(1, new Translation2d(15.69085, 1.597025));
+             put(2, new Translation2d(15.69085, 4.054475));
+             put(3, new Translation2d(15.69085, 6.156325));
+             put(4, new Translation2d(16.18615, 6.7262375));
+             put(5, new Translation2d(0.3556, 6.7262375));
+             put(6, new Translation2d(0.8509, 6.156325));
+             put(7, new Translation2d(0.8509, 4.054475));
+             put(8, new Translation2d(0.8509, 1.597025));
+         }};
+     }
 
     public static final class OIConstants {
         public static final int driverController = 0;

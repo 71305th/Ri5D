@@ -13,60 +13,65 @@ import org.photonvision.targeting.TargetCorner;
 
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ApriltagConstants;
+import frc.robot.Constants.Field;
 
 public class ApriltagSubsystem extends SubsystemBase {
   
-  PhotonCamera pv_cam = new PhotonCamera("WEB_CAM");
-  PhotonPipelineResult result;
-  boolean hasTarget;
-  List<PhotonTrackedTarget> targets;
+  PhotonCamera mPVCamera = new PhotonCamera("WEB_CAM");
+  PhotonPipelineResult mResult;
+  boolean mHasTarget;
+  List<PhotonTrackedTarget> mTargets;
 
   //define target
-  PhotonTrackedTarget target;
+  PhotonTrackedTarget mTarget;
 
   //define information of the target
-  private double yaw;
-  private double pitch;
-  private double area;
-  private double skew;
-  private int targetID;
-  private double poseAmbiguity;
+  double mYaw;
+  double mPitch;
+  double mArea;
+  double mSkew;
+  double mPoseAmbiguity;
 
-  Transform3d bestCameraToTarget;
-  Transform3d alternateCameraToTarget;
-  List<TargetCorner> corners;
+  Transform3d mBestCameraToTarget;
+  Transform3d mAlternateCameraToTarget;
+  List<TargetCorner> mCorners;
 
-  public ApriltagSubsystem() {}
+  /**
+   * Define the position vaeiable in meters
+   */
+  double mx, my;
+  int mTargetID;
+  Translation2d mApriltagIDPosition;
+  Transform3d mError;
+
+  public ApriltagSubsystem() {
+    mTargetID = 0;
+  }
 
   @Override
   public void periodic() {
-    result = pv_cam.getLatestResult();
-    hasTarget = result.hasTargets();
+    variableSettoZero();
+    mResult = mPVCamera.getLatestResult();
+    mHasTarget = mResult.hasTargets();
 
-    if (hasTarget){
-      target = result.getBestTarget();
-      yaw = target.getYaw();
-      pitch = target.getPitch();
-      area = target.getArea();
-      skew = target.getSkew();
-      targetID = target.getFiducialId();
-      poseAmbiguity = target.getPoseAmbiguity();
+    if( mHasTarget ){
+      mTarget = mResult.getBestTarget();
+      mYaw = mTarget.getYaw();
+      mPitch = mTarget.getPitch();
+      mArea = mTarget.getArea();
+      mSkew = mTarget.getSkew();
+      mTargetID = mTarget.getFiducialId();
+      mPoseAmbiguity = mTarget.getPoseAmbiguity();
 
-      bestCameraToTarget = target.getBestCameraToTarget();
-      corners = target.getDetectedCorners();
+      mBestCameraToTarget = mTarget.getBestCameraToTarget();
+      mCorners = mTarget.getDetectedCorners();
 
       getCameratoTarget();
     }
-
-    // SmartDashboard.putNumber("targetID", targetID);
-    // SmartDashboard.putNumber("yaw", yaw);
-    // SmartDashboard.putNumber("skew", skew);
-    // SmartDashboard.putNumber("area", area); 
-    // SmartDashboard.putNumber("pitch", pitch);
-    // SmartDashboard.putNumber("poseAmbiguity", poseAmbiguity);
   }
 
   @Override
@@ -74,9 +79,38 @@ public class ApriltagSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
+  public void variableSettoZero(){
+    mYaw = 0;
+    mPitch = 0;
+    mArea = 0;
+    mSkew = 0;
+    mTargetID = 0;
+    mPoseAmbiguity = 0;
+  }
+
   public void snapshot(){
-    pv_cam.takeInputSnapshot();
-    pv_cam.takeOutputSnapshot();
+    mPVCamera.takeInputSnapshot();
+    mPVCamera.takeOutputSnapshot();
+  }
+
+  /**
+   * @return Your Position On Field. If there isn't any target return (-1.0, -1.0)
+   */
+  public Translation2d getPosByApriltag(){
+    mTargetID = getTargetID();
+    Translation2d mApriltagPosition = new Translation2d(-1.0, -1.0);
+
+    if( mTargetID != 0 ){
+        mApriltagIDPosition = Field.fieldmMap.get(mTargetID);
+        mError = getCameratoTarget();
+
+        mApriltagPosition = new Translation2d(
+          ApriltagConstants.kX * (mApriltagIDPosition.getX() + mError.getX()),
+          ApriltagConstants.kY * (mApriltagIDPosition.getY() + mError.getY())
+        );
+    }
+
+    return mApriltagPosition;
   }
 
   /**
@@ -86,40 +120,40 @@ public class ApriltagSubsystem extends SubsystemBase {
    * z -> up</p>
    **/
   public Transform3d getCameratoTarget(){
-    return hasTarget == true ? target.getBestCameraToTarget() : new Transform3d( new Translation3d(0,0,0), new Rotation3d(0,0,0) );
+    return hasTarget() == true ? mTarget.getBestCameraToTarget() : new Transform3d( new Translation3d(0,0,0), new Rotation3d(0,0,0) );
   }
 
 
   public int getTargetID(){
-    return hasTarget == true ? target.getFiducialId() : 0;
+    return hasTarget() == true ? mTarget.getFiducialId() : 0;
   }
 
   /**
    * @return degrees
    **/
   public double getYaw(){
-    return hasTarget == true ? target.getYaw() : 0;
+    return hasTarget() == true ? mTarget.getYaw() : 0;
   }
 
   /**
    * @return degrees
    **/
   public double getSkew(){
-    return hasTarget == true ? target.getSkew() : 0;
+    return hasTarget() == true ? mTarget.getSkew() : 0;
   }
 
   /**
    * @return degrees
    **/
   public double getPitch(){
-    return hasTarget == true ? target.getPitch() : 0;
+    return hasTarget() == true ? mTarget.getPitch() : 0;
   }
 
   public boolean hasTarget(){
-    return hasTarget;    
+    return hasTarget();
   }
 
   public double getPoseAmbiguity(){
-    return hasTarget == true ? target.getPoseAmbiguity() : 0;
+    return hasTarget() == true ? mTarget.getPoseAmbiguity() : 0;
   }
 }
