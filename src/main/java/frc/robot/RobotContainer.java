@@ -15,11 +15,12 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.commands.Grabber.AutoGrabClose;
 import frc.robot.commands.Grabber.AutoGrabOpen;
 import frc.robot.commands.Grabber.GrabAndRelease;
+import frc.robot.commands.Grabber.WheelEject;
+import frc.robot.commands.Grabber.WheelIntake;
 import frc.robot.commands.Chassis.AutoElbowMove;
 import frc.robot.commands.Chassis.AutoMove;
 import frc.robot.commands.Chassis.AutoRotate;
 import frc.robot.commands.Chassis.LockPID;
-import frc.robot.commands.Grabber.WheelsTurnAndStop;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -54,7 +55,6 @@ public class RobotContainer {
   // Commands
   private final LockPID m_setPoint = new LockPID(m_drive);
   private final GrabAndRelease m_grabAndRelease = new GrabAndRelease(m_grabPCM);
-  private final WheelsTurnAndStop m_wheelsTurnAndStop = new WheelsTurnAndStop(m_grabWheel);
 
   // PID Controller
   PIDController pidController = new PIDController(0.05, 0, 0);
@@ -86,9 +86,9 @@ public class RobotContainer {
     // Arm
     m_arm.setDefaultCommand(new RunCommand(() -> {
       if(operatorJoystick.getRawAxis(OIConstants.trigger_L) > 0.05){
-        m_arm.set(operatorJoystick.getRawAxis(OIConstants.trigger_L) * ArmConstants.kArmSpeedScaler);
+        m_arm.set(-operatorJoystick.getRawAxis(OIConstants.trigger_L) * ArmConstants.kArmSpeedScaler);
       }else if (operatorJoystick.getRawAxis(OIConstants.trigger_R) > 0.05){
-        m_arm.set(-operatorJoystick.getRawAxis(OIConstants.trigger_R) * ArmConstants.kArmSpeedScaler);
+        m_arm.set(operatorJoystick.getRawAxis(OIConstants.trigger_R) * ArmConstants.kArmSpeedScaler);
       }
     }, m_arm));
 
@@ -119,6 +119,9 @@ public class RobotContainer {
 
     // make the grabber grab and release
     new JoystickButton(operatorJoystick, OIConstants.Btn_LB).onTrue(m_grabAndRelease);
+
+    new JoystickButton(operatorJoystick, OIConstants.Btn_Y).whileTrue(new WheelEject(m_grabWheel));
+    new JoystickButton(operatorJoystick, OIConstants.Btn_RB).whileTrue(new WheelIntake(m_grabWheel));
 
     // make the wheels on the grabber turn and stop
     // new JoystickButton(operatorJoystick, OIConstants.Btn_RB).onTrue(m_wheelsTurnAndStop); 已在Subsystem中
