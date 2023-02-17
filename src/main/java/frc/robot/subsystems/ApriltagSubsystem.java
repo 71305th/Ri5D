@@ -106,7 +106,7 @@ public class ApriltagSubsystem extends SubsystemBase {
 
         if( mTargetID <= 4 ){
           mApriltagPosition = new Translation2d (
-                    mApriltagIDPosition.getX() + ImagineConstants.kXDis * mError.getX(),
+                    mApriltagIDPosition.getX() - ImagineConstants.kXDis * mError.getX(),
                     mApriltagIDPosition.getY() + ImagineConstants.kYDis * mError.getY()
           );
         }else{

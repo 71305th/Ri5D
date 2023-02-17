@@ -26,6 +26,23 @@ public class LimelightSubsystem extends SubsystemBase{
     double a, a_2;
     boolean v, v_2;
 
+    double tangentCone_1 = 0;
+    double tangentCone_2 = 0;
+    double limeLightTheta = 0;
+    double limeLightHight = 0;
+    double cone_2hightTheorectic;
+    
+    double adjustConstant1 = 2; //limelight degrees
+    double adjustConstant2 = 0.2; //meters
+    double startTime = 0;
+    double currentTime;
+    double timeError = 3; //updates Boolean Cone_2Empty in every 3 seconds
+    double tyErrorSum;
+    double heightErrorSum;
+
+    public boolean Cone_2Empty;
+
+
     @Override
     public void periodic(){
 
@@ -87,4 +104,6 @@ public class LimelightSubsystem extends SubsystemBase{
     public boolean getV_2(){
         return v_2;
     }
+
+    
 }

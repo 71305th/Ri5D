@@ -99,6 +99,13 @@ public class RobotContainer {
       m_elbow.elbowRun(-operatorJoystick.getRawAxis(OIConstants.leftStick_Y) * ElbowConstants.kElbowSpeedScaler);
     }, m_elbow));
 
+    //apriltag
+    m_apriltag.setDefaultCommand(new RunCommand(()->{
+      if(operatorJoystick.getRawButtonPressed(OIConstants.Btn_B)){
+        m_apriltag.getPosByApriltag();
+      }
+    }, m_apriltag));
+
     // Configure the button bindings
     configureButtonBindings();
   }
