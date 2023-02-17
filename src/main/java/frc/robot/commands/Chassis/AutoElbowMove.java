@@ -22,16 +22,16 @@ public class AutoElbowMove  extends CommandBase{
 
     public void execute(){
         double output = pidCon.calculate(this.elbow.getArmAngPos(), this.targetPos);
-        this.elbow.elbowRun(output);
+        this.elbow.set(output);
     }
 
     public void end(boolean interrupted){
-        this.elbow.elbowStop();
+        this.elbow.stop();
     }
 
     public boolean isFinished(){
         if(Math.abs(this.targetPos-elbow.getArmAngPos())<0.05){
-            this.elbow.elbowStop();;
+            this.elbow.stop();;
             return true;
         }
         return false;

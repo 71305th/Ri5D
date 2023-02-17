@@ -17,15 +17,10 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new LufySubsystem. */
   public ArmSubsystem() {
     m_armMotor.setInverted(false);
-    m_armMotor.getEncoder().setPosition(0);
+    resetEncoders();
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
-  public void run(double speed) {
+  public void set(double speed) {
     m_armMotor.set(speed);
   }
 
@@ -33,15 +28,13 @@ public class ArmSubsystem extends SubsystemBase {
     m_armMotor.set(0);
   }
 
-  public double getArmAngPos() {
-    return m_armMotor.getEncoder().getPosition() * 2 * Math.PI / ArmConstants.kEncoderCPR / ArmConstants.kGearRatio;
-  }
-
-  public double getArmAngVel() {
-    return m_armMotor.getEncoder().getVelocity() * 2 * Math.PI / ArmConstants.kEncoderCPR / ArmConstants.kGearRatio;
-  }
-
   public void resetEncoders() {
     m_armMotor.getEncoder().setPosition(0);
   }
+
+  @Override
+  public void periodic() {}
+
+  @Override
+  public void simulationPeriodic() {}
 }

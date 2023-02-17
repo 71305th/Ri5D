@@ -13,24 +13,17 @@ import frc.robot.Constants.ElbowConstants;
 public class ElbowSubsystem extends SubsystemBase {
 
   private final CANSparkMax m_elbowMotor = new CANSparkMax(ElbowConstants.kMotorID, MotorType.kBrushless);
-  // private final CANcoder m_elbowCancoder = new CANcoder(ElbowConstants.cancoderID);
   
-  /** Creates a new LufySubsystem. */
   public ElbowSubsystem() {
     m_elbowMotor.setInverted(true);
-    m_elbowMotor.getEncoder().setPosition(0);
+    resetEncoders();
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
-  public void elbowRun(double speed){
+  public void set(double speed){
     m_elbowMotor.set(speed);
   }
   
-  public void elbowStop(){
+  public void stop(){
     m_elbowMotor.set(0);
   }
 
@@ -42,11 +35,17 @@ public class ElbowSubsystem extends SubsystemBase {
     return m_elbowMotor.getEncoder().getVelocity() * 2 * Math.PI / ElbowConstants.kEncoderCPR / ElbowConstants.kGearRatio;
   }
 
+  public double getPosition() {
+    return m_elbowMotor.getEncoder().getPosition();
+  }
+
   public void resetEncoders() {
    m_elbowMotor.getEncoder().setPosition(0);
   }
 
-  public double getPosition() {
-    return m_elbowMotor.getEncoder().getPosition();
-  }
+  @Override
+  public void periodic() {}
+
+  @Override
+  public void simulationPeriodic() {}
 }

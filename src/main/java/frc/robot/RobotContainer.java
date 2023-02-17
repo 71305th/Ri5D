@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ElbowConstants;
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.Chassis.PathFollowingRamsete;
 import frc.robot.commands.Grabber.AutoGrabClose;
 import frc.robot.commands.Grabber.AutoGrabOpen;
 import frc.robot.commands.Grabber.GrabAndRelease;
@@ -21,7 +19,6 @@ import frc.robot.commands.Chassis.AutoElbowMove;
 import frc.robot.commands.Chassis.AutoMove;
 import frc.robot.commands.Chassis.AutoRotate;
 import frc.robot.commands.Chassis.LockPID;
-import frc.robot.commands.Elevator.OneButtonRunUpDown;
 import frc.robot.commands.Grabber.WheelsTurnAndStop;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -58,7 +55,6 @@ public class RobotContainer {
   private final LockPID m_setPoint = new LockPID(m_drive);
   private final GrabAndRelease m_grabAndRelease = new GrabAndRelease(m_grabPCM);
   private final WheelsTurnAndStop m_wheelsTurnAndStop = new WheelsTurnAndStop(m_grabWheel);
-  private final OneButtonRunUpDown m_oneButtonRunUpDown = new OneButtonRunUpDown(m_elevator);
 
   // PID Controller
   PIDController pidController = new PIDController(0.05, 0, 0);
@@ -84,29 +80,25 @@ public class RobotContainer {
 
     // Elevator
     m_elevator.setDefaultCommand(new RunCommand(() -> {
-      if (operatorJoystick.getRawAxis(OIConstants.rightStick_Y) < -0.3) {
-        m_elevator.elevatorRunUp(ElevatorConstants.elevatorUpSpeedScaler);
-      } else if (operatorJoystick.getRawAxis(OIConstants.rightStick_Y) > 0.3) {
-        m_elevator.elevatorRunDown(ElevatorConstants.elevatorDownSpeedScaler);
-      } 
+      m_elevator.set(operatorJoystick.getRawAxis(OIConstants.rightStick_Y));
     } , m_elevator));
 
     // Arm
     m_arm.setDefaultCommand(new RunCommand(() -> {
       if(operatorJoystick.getRawAxis(OIConstants.trigger_L) > 0.05){
-        m_arm.run(operatorJoystick.getRawAxis(OIConstants.trigger_L) * ArmConstants.kArmSpeedScaler);
+        m_arm.set(operatorJoystick.getRawAxis(OIConstants.trigger_L) * ArmConstants.kArmSpeedScaler);
       }else if (operatorJoystick.getRawAxis(OIConstants.trigger_R) > 0.05){
-        m_arm.run(-operatorJoystick.getRawAxis(OIConstants.trigger_R) * ArmConstants.kArmSpeedScaler);
+        m_arm.set(-operatorJoystick.getRawAxis(OIConstants.trigger_R) * ArmConstants.kArmSpeedScaler);
       }
     }, m_arm));
 
     // Elbow
     m_elbow.setDefaultCommand(new RunCommand(() -> {
       if(operatorJoystick.getRawAxis(OIConstants.leftStick_Y) > 0.05 || operatorJoystick.getRawAxis(OIConstants.leftStick_Y) < -0.05){
-        m_elbow.elbowRun(operatorJoystick.getRawAxis(OIConstants.leftStick_Y) * ElbowConstants.kElbowSpeedScaler);
+        m_elbow.set(operatorJoystick.getRawAxis(OIConstants.leftStick_Y) * ElbowConstants.kElbowSpeedScaler);
         pos = m_elbow.getPosition();
       } else {
-        m_elbow.elbowRun(pidController.calculate(m_elbow.getPosition(), pos));
+        m_elbow.set(pidController.calculate(m_elbow.getPosition(), pos));
       }
     }, m_elbow));
 

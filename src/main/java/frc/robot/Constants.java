@@ -100,8 +100,8 @@ public final class Constants {
 
     public static final class GrabberConstants {
         public static final int compressorID = 0;
-        public static final int ForwardChannel = 2;
-        public static final int ReverseChannel = 3;
+        public static final int ForwardChannel = 6;
+        public static final int ReverseChannel = 7;
         public static final int motorID = 15;
     }
 

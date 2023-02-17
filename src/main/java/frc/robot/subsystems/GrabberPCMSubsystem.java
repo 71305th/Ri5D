@@ -16,7 +16,7 @@ public class GrabberPCMSubsystem extends SubsystemBase {
   
   private final Compressor comp = new Compressor(GrabberConstants.compressorID ,PneumaticsModuleType.CTREPCM);
   
-  private final DoubleSolenoid DoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 3, 2);
+  private final DoubleSolenoid DoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 6, 7);
 
   private final Joystick joystick = new Joystick(OIConstants.kOperatorController);
 

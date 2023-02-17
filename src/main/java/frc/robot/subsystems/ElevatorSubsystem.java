@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 
@@ -20,32 +21,21 @@ public class ElevatorSubsystem extends SubsystemBase {
   private final DigitalInput rightUpLimitSwitch = new DigitalInput(ElevatorConstants.rightUpChannel);
   private final DigitalInput rightDownLimitSwitch = new DigitalInput(ElevatorConstants.rightDownChannel);
 
+  private final MotorControllerGroup elevator = new MotorControllerGroup(m_motorElevatorLeft, m_motorElevatorRight);
+
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
-    m_motorElevatorLeft.setInverted(false);
-    m_motorElevatorRight.setInverted(false);
-    // m_motorElevatorRight.follow(m_motorElevatorLeft, true);
-    m_motorElevatorLeft.follow(m_motorElevatorRight, true);
-    m_motorElevatorLeft.getEncoder().setPosition(0);
-    m_motorElevatorRight.getEncoder().setPosition(0);
+    m_motorElevatorLeft.setInverted(true);
+    elevator.setInverted(false);
+    resetEncoders();
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
-  public void elevatorRunUp(double speed){
-    if(this.atUpLimit() == false) m_motorElevatorLeft.set(speed);
-    else m_motorElevatorLeft.set(0);
-  }
-
-  public void elevatorRunDown(double speed){
-    if(this.atDownLimit() == false) m_motorElevatorLeft.set(speed);
-    else m_motorElevatorLeft.set(0);
+  public void set(double speed){
+    if(!this.atLimit())elevator.set(speed);
+    elevator.set(0);
   }
   
-  public void elevatorstop(){
+  public void stop(){
     m_motorElevatorLeft.set(0);
   }
 
@@ -53,16 +43,12 @@ public class ElevatorSubsystem extends SubsystemBase {
     return m_motorElevatorLeft.getEncoder().getPosition();
   }
 
-  public double getLeftMotorVel(){
-    return m_motorElevatorLeft.getEncoder().getVelocity();
-  }
-
   public double getRightMotorPos(){
     return m_motorElevatorRight.getEncoder().getPosition();
   }
 
-  public double getRightMotorVel(){
-    return m_motorElevatorRight.getEncoder().getVelocity();
+  public double getPos() {
+    return (getLeftMotorPos() + getRightMotorPos())/2;
   }
 
   public void resetEncoders(){
@@ -87,19 +73,23 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public boolean atLimit(){
-    if(this.getLeftUpLimit() == false && this.getLeftDownLimit() == false
-    && this.getRightUpLimit() == false && this.getRightDownLimit() == false){
-      return false;
-    } else return true;
+    if(!(atDownLimit() || atUpLimit()))return false;
+    else return true;
   }
 
   public boolean atUpLimit(){
-   if(this.getLeftUpLimit() == false && this.getRightUpLimit() == false) return false;
+   if(!(this.getLeftUpLimit() || this.getRightUpLimit() == false)) return false;
    else return true;
   }
 
   public boolean atDownLimit(){
-    if(this.getLeftDownLimit() == false && this.getRightDownLimit() == false) return false;
+    if(!(this.getLeftDownLimit() || this.getRightDownLimit())) return false;
     else return true;
-   }
+  }
+  
+  @Override
+  public void periodic() {}
+
+  @Override
+  public void simulationPeriodic() {}
 }
