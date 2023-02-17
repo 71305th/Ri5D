@@ -18,7 +18,10 @@ public class GrabberWheelSubsystem extends SubsystemBase {
   private final Joystick joystick = new Joystick(OIConstants.kOperatorController);
 
   private boolean lastButtonState = false;
+  private boolean lastButtonState2 = false;
+
   private boolean state = false;
+  private boolean state2 = false;
 
   /** Creates a new GrabberWheelSubsystem. */
   public GrabberWheelSubsystem() {
@@ -26,6 +29,8 @@ public class GrabberWheelSubsystem extends SubsystemBase {
     m_grabberMotor.getEncoder().setPosition(0);
     this.lastButtonState = false;
     this.state = false;
+    this.lastButtonState2 = false;
+    this.state2 = false;
   }
 
   @Override
@@ -36,8 +41,18 @@ public class GrabberWheelSubsystem extends SubsystemBase {
     }
     this.lastButtonState = buttonInput;
     if (this.state){
-      this.m_grabberMotor.set(0.15);
-    } else {
+      this.m_grabberMotor.set(-0.2);
+    }
+    boolean buttonInput2 = this.joystick.getRawButtonPressed(OIConstants.Btn_Y);
+    if(this.lastButtonState2 == true && buttonInput2 == false){
+      this.state2 = !this.state2;
+    }
+    this.lastButtonState2 = buttonInput2;
+    if (this.state2){
+      this.m_grabberMotor.set(0.1);
+    }
+
+    if (!this.state && !this.state2){
       this.m_grabberMotor.set(0);
     }
   }
