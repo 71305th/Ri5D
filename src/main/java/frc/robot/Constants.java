@@ -26,10 +26,10 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     public static final class DriveConstants {
         // Motors
-        public static final int motorFrontLeft = 2;
-        public static final int motorFrontRight = 3;
-        public static final int motorRearLeft = 1;
-        public static final int motorRearRight = 4;
+        public static final int kMotorFrontLeft = 2;
+        public static final int kMotorFrontRight = 3;
+        public static final int kMotorRearLeft = 1;
+        public static final int kMotorRearRight = 4;
 
         // Encoders
         // public static final int kLeftEncoderPort = 3;
@@ -77,42 +77,42 @@ public final class Constants {
     public static final class ArmConstants {
         public static final double kArmSpeedScaler = 0.3;
         public static final double kArmOneLength = 0.80;
-        public static final int motorID = 14;
+        public static final int kMotorID = 14;
 
         public static final double kEncoderCPR = 42;
         public static final double kGearRatio = 36 * 72 / 48;
     }
 
     public static final class ElbowConstants {
-        public static final int motorID = 12;
-        public static final int cancoderID = 0;
-        public static final double elbowSpeedScaler = 0.3;
+        public static final int kMotorID = 12;
+        public static final int kCancoderID = 0;
+        public static final double kElbowSpeedScaler = 0.3;
 
         public static final double kEncoderCPR = 42;
         public static final double kGearRatio = 40 * 72 / 20;
     }
 
     public static final class GrabberConstants {
-        public static final int compressorID = 0;
-        public static final int ForwardChannel = 6;
-        public static final int ReverseChannel = 7;
-        public static final int motorID = 15;
+        public static final int kCompressorID = 0;
+        public static final int kForwardChannel = 6;
+        public static final int kReverseChannel = 7;
+        public static final int kMotorID = 15;
     }
 
     public final class ElevatorConstants {
-        public static final int leftMotorID = 11;
-        public static final int rightMotorID = 8;
-        public static final double elevatorUpSpeedScaler = 0.5;
-        public static final double elevatorDownSpeedScaler = 0.3;
-        public static final int leftUpChannel = 0;
-        public static final int leftDownChannel = 1;
-        public static final int rightUpChannel = 2;
-        public static final int rightDownChannel = 3;
+        public static final int kLeftMotorID = 11;
+        public static final int kRightMotorID = 8;
+        public static final double kElevatorUpSpeedScaler = 0.5;
+        public static final double kElevatorDownSpeedScaler = 0.3;
+        public static final int kLeftUpChannel = 0;
+        public static final int kLeftDownChannel = 1;
+        public static final int kRightUpChannel = 2;
+        public static final int kRightDownChannel = 3;
     }
 
     public static final class OIConstants {
-        public static final int driverController = 0;
-        public static final int operatorController = 1;
+        public static final int kDriverController = 0;
+        public static final int kOperatorController = 1;
 
         public static final int leftStick_X = 0;
         public static final int leftStick_Y = 1;

@@ -47,8 +47,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
 
   // Joystick
-  private final Joystick driverJoystick = new Joystick(OIConstants.driverController);
-  private final Joystick operatorJoystick = new Joystick(OIConstants.operatorController);
+  private final Joystick driverJoystick = new Joystick(OIConstants.kDriverController);
+  private final Joystick operatorJoystick = new Joystick(OIConstants.kOperatorController);
 
   // Subsystems
   private final DriveSubsystem m_drive = new DriveSubsystem();
@@ -79,9 +79,9 @@ public class RobotContainer {
     // Elevator
     m_elevator.setDefaultCommand(new RunCommand(() -> {
       if (operatorJoystick.getRawAxis(OIConstants.rightStick_Y) < -0.3) {
-        m_elevator.elevatorRunUp(ElevatorConstants.elevatorUpSpeedScaler);
+        m_elevator.elevatorRunUp(ElevatorConstants.kElevatorUpSpeedScaler);
       } else if (operatorJoystick.getRawAxis(OIConstants.rightStick_Y) > 0.3) {
-        m_elevator.elevatorRunDown(ElevatorConstants.elevatorDownSpeedScaler);
+        m_elevator.elevatorRunDown(ElevatorConstants.kElevatorDownSpeedScaler);
       } 
     } , m_elevator));
 
@@ -96,7 +96,7 @@ public class RobotContainer {
 
     // Elbow
     m_elbow.setDefaultCommand(new RunCommand(() -> {
-      m_elbow.elbowRun(-operatorJoystick.getRawAxis(OIConstants.leftStick_Y) * ElbowConstants.elbowSpeedScaler);
+      m_elbow.elbowRun(-operatorJoystick.getRawAxis(OIConstants.leftStick_Y) * ElbowConstants.kElbowSpeedScaler);
     }, m_elbow));
 
     // Configure the button bindings
@@ -149,7 +149,7 @@ public class RobotContainer {
       new AutoGrabOpen(m_grabPCM, m_grabWheel)
       )
       
-      );
+    );
   }
 
   public void testMotor(){

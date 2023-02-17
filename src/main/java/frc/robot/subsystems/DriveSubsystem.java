@@ -20,10 +20,10 @@ import frc.robot.Constants.DriveConstants;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  private final CANSparkMax m_motorFrontLeft = new CANSparkMax(DriveConstants.motorFrontLeft, MotorType.kBrushless);
-  private final CANSparkMax m_motorFrontRight = new CANSparkMax(DriveConstants.motorFrontRight, MotorType.kBrushless);
-  private final CANSparkMax m_motorRearLeft = new CANSparkMax(DriveConstants.motorRearLeft, MotorType.kBrushless);
-  private final CANSparkMax m_motorRearRight = new CANSparkMax(DriveConstants.motorRearRight, MotorType.kBrushless);
+  private final CANSparkMax m_motorFrontLeft = new CANSparkMax(DriveConstants.kMotorFrontLeft, MotorType.kBrushless);
+  private final CANSparkMax m_motorFrontRight = new CANSparkMax(DriveConstants.kMotorFrontRight, MotorType.kBrushless);
+  private final CANSparkMax m_motorRearLeft = new CANSparkMax(DriveConstants.kMotorRearLeft, MotorType.kBrushless);
+  private final CANSparkMax m_motorRearRight = new CANSparkMax(DriveConstants.kMotorRearRight, MotorType.kBrushless);
 
   private final MotorControllerGroup rightGroup = new MotorControllerGroup(m_motorFrontRight, m_motorRearRight);
   private final MotorControllerGroup leftGroup = new MotorControllerGroup(m_motorFrontLeft, m_motorRearLeft);

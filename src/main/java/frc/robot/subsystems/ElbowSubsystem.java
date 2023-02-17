@@ -12,7 +12,7 @@ import frc.robot.Constants.ElbowConstants;
 
 public class ElbowSubsystem extends SubsystemBase {
 
-  private final CANSparkMax m_elbowMotor = new CANSparkMax(ElbowConstants.motorID, MotorType.kBrushless);
+  private final CANSparkMax m_elbowMotor = new CANSparkMax(ElbowConstants.kMotorID, MotorType.kBrushless);
   // private final CANcoder m_elbowCancoder = new CANcoder(ElbowConstants.cancoderID);
   
   /** Creates a new LufySubsystem. */
