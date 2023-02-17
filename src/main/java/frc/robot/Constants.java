@@ -50,8 +50,8 @@ public final class Constants {
         public static final double kTrackWidthmeters = 0.595;
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
                 kTrackWidthmeters);
-        public static final double chassisArcadeSpdScaler = 0.7;
-        public static final double chassisArcadeRotScaler = 0.6;
+        public static final double chassisArcadeSpdScaler = 1;
+        public static final double chassisArcadeRotScaler = 0.85;
         public static final double chassisTankScaler = 0.5;
     }
 

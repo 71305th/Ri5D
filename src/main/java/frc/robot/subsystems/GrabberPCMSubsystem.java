@@ -14,7 +14,7 @@ import frc.robot.Constants.OIConstants;;
 
 public class GrabberPCMSubsystem extends SubsystemBase {
   
-  private final Compressor comp = new Compressor(GrabberConstants.kCompressorID ,PneumaticsModuleType.CTREPCM);
+  private final Compressor comp = new Compressor(GrabberConstants.compressorID ,PneumaticsModuleType.CTREPCM);
   
   private final DoubleSolenoid DoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 3, 2);
 

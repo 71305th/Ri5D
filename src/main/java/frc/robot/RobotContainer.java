@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -59,11 +60,22 @@ public class RobotContainer {
   private final WheelsTurnAndStop m_wheelsTurnAndStop = new WheelsTurnAndStop(m_grabWheel);
   private final OneButtonRunUpDown m_oneButtonRunUpDown = new OneButtonRunUpDown(m_elevator);
 
+  // PID Controller
+  PIDController pidController = new PIDController(0.05, 0, 0);
+
+  // Elbow pos
+  private double pos;
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Drive
     m_drive.setDefaultCommand(new RunCommand(() -> {
+      if (driverJoystick.getRawButtonPressed(OIConstants.Btn_RB))
+      m_drive.arcadeDrive(
+        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * DriveConstants.chassisArcadeSpdScaler * 0.5, 
+        driverJoystick.getRawAxis(OIConstants.rightStick_X) * DriveConstants.chassisArcadeRotScaler* 0.5);
+      else
       m_drive.arcadeDrive(
         -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * DriveConstants.chassisArcadeSpdScaler, 
         driverJoystick.getRawAxis(OIConstants.rightStick_X) * DriveConstants.chassisArcadeRotScaler);
@@ -83,14 +95,19 @@ public class RobotContainer {
     m_arm.setDefaultCommand(new RunCommand(() -> {
       if(operatorJoystick.getRawAxis(OIConstants.trigger_L) > 0.05){
         m_arm.run(operatorJoystick.getRawAxis(OIConstants.trigger_L) * ArmConstants.kArmSpeedScaler);
-      }else{
+      }else if (operatorJoystick.getRawAxis(OIConstants.trigger_R) > 0.05){
         m_arm.run(-operatorJoystick.getRawAxis(OIConstants.trigger_R) * ArmConstants.kArmSpeedScaler);
       }
     }, m_arm));
 
     // Elbow
     m_elbow.setDefaultCommand(new RunCommand(() -> {
-      m_elbow.elbowRun(-operatorJoystick.getRawAxis(OIConstants.leftStick_Y) * ElbowConstants.kElbowSpeedScaler);
+      if(operatorJoystick.getRawAxis(OIConstants.leftStick_Y) > 0.05 || operatorJoystick.getRawAxis(OIConstants.leftStick_Y) < -0.05){
+        m_elbow.elbowRun(operatorJoystick.getRawAxis(OIConstants.leftStick_Y) * ElbowConstants.kElbowSpeedScaler);
+        pos = m_elbow.getPosition();
+      } else {
+        m_elbow.elbowRun(pidController.calculate(m_elbow.getPosition(), pos));
+      }
     }, m_elbow));
 
     // Configure the button bindings
@@ -109,13 +126,13 @@ public class RobotContainer {
     // new JoystickButton(driverJoystick, OIConstants.Btn_B).onTrue(new RunCommand( () -> {m_drive.resetEncoders();}, m_drive));
 
     // make the grabber grab and release
-    // new JoystickButton(operatorJoystick, OIConstants.Btn_LB).onTrue(m_grabAndRelease);
+    new JoystickButton(operatorJoystick, OIConstants.Btn_LB).onTrue(m_grabAndRelease);
 
     // make the wheels on the grabber turn and stop
-    // new JoystickButton(operatorJoystick, OIConstants.Btn_RB).onTrue(m_wheelsTurnAndStop);
+    // new JoystickButton(operatorJoystick, OIConstants.Btn_RB).onTrue(m_wheelsTurnAndStop); 已在Subsystem中
 
     // make the elevator go up or down in a click
-    new JoystickButton(operatorJoystick, OIConstants.Btn_X).onTrue(m_oneButtonRunUpDown);
+    // new JoystickButton(operatorJoystick, OIConstants.Btn_X).onTrue(m_oneButtonRunUpDown); 已在Subsystem中
   }
 
   /**

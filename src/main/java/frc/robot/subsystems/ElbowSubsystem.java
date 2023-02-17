@@ -17,7 +17,7 @@ public class ElbowSubsystem extends SubsystemBase {
   
   /** Creates a new LufySubsystem. */
   public ElbowSubsystem() {
-    m_elbowMotor.setInverted(false);
+    m_elbowMotor.setInverted(true);
     m_elbowMotor.getEncoder().setPosition(0);
   }
 
@@ -46,5 +46,7 @@ public class ElbowSubsystem extends SubsystemBase {
    m_elbowMotor.getEncoder().setPosition(0);
   }
 
-  
+  public double getPosition() {
+    return m_elbowMotor.getEncoder().getPosition();
+  }
 }
