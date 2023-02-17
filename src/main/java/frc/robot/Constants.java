@@ -50,9 +50,10 @@ public final class Constants {
         public static final double kTrackWidthmeters = 0.595;
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
                 kTrackWidthmeters);
-        public static final double chassisArcadeSpdScaler = 1;
-        public static final double chassisArcadeRotScaler = 1;
-        public static final double chassisTankScaler = 0.5;
+        public static final double kChassisArcadeSpdScaler = 1;
+        public static final double kChassisArcadeRotScaler = 1;
+        public static final double kChassisTankScaler = 0.5;
+        public static final double kRobotDriveHight = 0.20;
     }
 
     public static final class PIDConstants {
@@ -60,7 +61,7 @@ public final class Constants {
         public static final double kP_Lock = 1.0;
         public static final double kI_Lock = 0.05;
         public static final double kD_Lock = 0.000;
-        public static final double iLimit_Lock = 0.36;
+        public static final double kILimit_Lock = 0.36;
     }
 
     public static final class AutoConstants {
@@ -74,7 +75,8 @@ public final class Constants {
     }
 
     public static final class ArmConstants {
-        public static final double armSpeedScaler = 0.3;
+        public static final double kArmSpeedScaler = 0.3;
+        public static final double kArmOneLength = 0.80;
         public static final int motorID = 14;
 
         public static final double kEncoderCPR = 42;
@@ -128,42 +130,41 @@ public final class Constants {
         public static final int Btn_RS = 10;
     }
 
-       /**
+    /**
      * measurements of the cone area in meters:
      * 
      * <ul>
-     * <li>cone1-->lower one 
-     * <li>cone2-->upper one
+     * <li>cone1 --> lower one 
+     * <li>cone2 --> upper one
      */
-    public static class Cones{
+    public static class ImagineConstants{
+        // Apriltag
+        public static final double kXDis = 0.1;
+        public static final double kYDis = 0.1;
+        public static final double kApriltagHeight = 0.515;
       
-        public static final double apriltagHeight = 0.515;
-        public static final double conesHight_2 = 1.06600625;
-        public static final double conesHight_1 = 0.568325;
-        public static final double distenceBetweenCones = 0.4318;
-        public static final double robotDriveHight = 0.20;
-        public static final double armOneLength = 0.80;
+        // Cone & Apriltag Height
+        public static final double kConesHight_2 = 1.06600625;
+        public static final double kConesHight_1 = 0.568325;
+        public static final double kDistenceBetweenCones = 0.4318;
       }
 
-      public static final class field {
+      public static final class FieldConstants {
         /**
          * length: meters </p>
          * (0,0) --> blue aliance
          * @param targetID
          * @param position
          */
-         public static Map<Integer, Translation2d> fieldmMap = new HashMap<>(){{
-             put(1, new Translation2d(15.69085, 1.597025));
-             put(2, new Translation2d(15.69085, 4.054475));
-             put(3, new Translation2d(15.69085, 6.156325));
-             put(4, new Translation2d(16.18615, 6.7262375));
-             put(5, new Translation2d(0.3556, 6.7262375));
-             put(6, new Translation2d(0.8509, 6.156325));
-             put(7, new Translation2d(0.8509, 4.054475));
-             put(8, new Translation2d(0.8509, 1.597025));
-         }};
-
-         public static final double kx_dis = 0.1;
-         public static final double ky_dis = 0.1;
+        public static Map<Integer, Translation2d> fieldmMap = new HashMap<>(){{
+            put(1, new Translation2d(15.69085, 1.597025));
+            put(2, new Translation2d(15.69085, 4.054475));
+            put(3, new Translation2d(15.69085, 6.156325));
+            put(4, new Translation2d(16.18615, 6.7262375));
+            put(5, new Translation2d(0.3556, 6.7262375));
+            put(6, new Translation2d(0.8509, 6.156325));
+            put(7, new Translation2d(0.8509, 4.054475));
+            put(8, new Translation2d(0.8509, 1.597025));
+        }};
      }
 }
