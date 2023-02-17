@@ -137,6 +137,7 @@ public final class Constants {
      */
     public static class Cones{
       
+        public static final double apriltagHeight = 0.515;
         public static final double conesHight_2 = 1.06600625;
         public static final double conesHight_1 = 0.568325;
         public static final double distenceBetweenCones = 0.4318;

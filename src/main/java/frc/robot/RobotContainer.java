@@ -66,7 +66,7 @@ public class RobotContainer {
   private final GrabAndRelease m_grabAndRelease = new GrabAndRelease(m_grabPCM);
   private final WheelsTurnAndStop m_wheelsTurnAndStop = new WheelsTurnAndStop(m_grabWheel);
   private final OneButtonRunUpDown m_oneButtonRunUpDown = new OneButtonRunUpDown(m_elevator);
-
+  private final ApriltagField m_ApriltagField = new ApriltagField(m_apriltag);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -123,6 +123,8 @@ public class RobotContainer {
 
     // make the elevator go up or down in a click
     new JoystickButton(operatorJoystick, OIConstants.Btn_X).onTrue(m_oneButtonRunUpDown);
+
+    new JoystickButton(operatorJoystick, OIConstants.Btn_B).onTrue(m_ApriltagField);
   }
 
   /**
