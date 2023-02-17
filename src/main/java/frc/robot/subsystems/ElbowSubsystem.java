@@ -15,7 +15,7 @@ public class ElbowSubsystem extends SubsystemBase {
   private final CANSparkMax m_elbowMotor = new CANSparkMax(ElbowConstants.kMotorID, MotorType.kBrushless);
   
   public ElbowSubsystem() {
-    m_elbowMotor.setInverted(true);
+    m_elbowMotor.setInverted(false);
     resetEncoders();
   }
 
