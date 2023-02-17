@@ -5,8 +5,10 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ImagineConstants;
 
 public class LimelightSubsystem extends SubsystemBase{
     
@@ -35,12 +37,12 @@ public class LimelightSubsystem extends SubsystemBase{
     double adjustConstant1 = 2; //limelight degrees
     double adjustConstant2 = 0.2; //meters
     double startTime = 0;
-    double currentTime;
+    double currentTime = 0;
     double timeError = 3; //updates Boolean Cone_2Empty in every 3 seconds
-    double tyErrorSum;
-    double heightErrorSum;
+    double tyErrorSum = 0;
+    double heightErrorSum = 0;
 
-    public boolean Cone_2Empty;
+    boolean Cone_2Empty;
 
 
     @Override
@@ -65,6 +67,37 @@ public class LimelightSubsystem extends SubsystemBase{
         SmartDashboard.putNumber("ty_2", mY_2);
         SmartDashboard.putNumber("ta_2", mA_2);
         SmartDashboard.putBoolean("tv_2", mV_2);
+
+        currentTime = Timer.getFPGATimestamp();
+
+        tangentCone_1 = Math.abs(Math.tan(ty_1.getDouble(0)*Math.PI/180 + limeLightTheta*Math.PI/180 + Math.PI/2));
+        tangentCone_2 = Math.abs(Math.tan(ty_2.getDouble(0)*Math.PI/180 + limeLightTheta*Math.PI/180 + Math.PI/2));
+        cone_2hightTheorectic = ImagineConstants.kDistenceBetweenCones*tangentCone_2 + ImagineConstants.kConesHight_1*tangentCone_2/tangentCone_1;
+
+        tyErrorSum += (Math.abs(ty_1.getDouble(0) - ty_2.getDouble(0)));
+        heightErrorSum += (Math.abs(cone_2hightTheorectic - ImagineConstants.kConesHight_2));
+
+
+        if(currentTime - startTime == timeError){
+            if(tyErrorSum < adjustConstant1){
+                if(heightErrorSum < adjustConstant2){
+                    Cone_2Empty = true;
+                }else{
+                    Cone_2Empty = false;
+                }
+            }else{
+                Cone_2Empty = true;
+             }
+        
+             startTime = Timer.getFPGATimestamp();
+             tyErrorSum = 0;
+             heightErrorSum = 0;
+        }
+
+        SmartDashboard.putBoolean("Cone2Empty", Cone_2Empty);
+
+        
+
     }
 
     /**
@@ -121,6 +154,10 @@ public class LimelightSubsystem extends SubsystemBase{
      */
     public boolean getV_2(){
         return mV_2;
+    }
+
+    public boolean isCone_2Empty(){
+        return Cone_2Empty;
     }
 
     

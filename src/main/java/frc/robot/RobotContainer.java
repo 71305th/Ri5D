@@ -22,7 +22,6 @@ import frc.robot.commands.Chassis.AutoRotate;
 import frc.robot.commands.Chassis.LockPID;
 import frc.robot.commands.Elevator.OneButtonRunUpDown;
 import frc.robot.commands.Grabber.WheelsTurnAndStop;
-import frc.robot.commands.Image.CheckCones;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -141,9 +140,7 @@ public class RobotContainer {
     //   m_setPoint);
 
 
-    return new ParallelCommandGroup(
-      new CheckCones(mLimelight),
-
+    return 
       new SequentialCommandGroup( 
       new AutoMove(mDrive, 5),
       new AutoGrabOpen(mGrabPCM, mGrabWheel),
@@ -153,10 +150,7 @@ public class RobotContainer {
       new AutoMove(mDrive, 0),
       new AutoRotate(mDrive, -180),
       new AutoElbowMove(mElbow, 0.2),
-      new AutoGrabOpen(mGrabPCM, mGrabWheel)
-      )
-      
-    );
+      new AutoGrabOpen(mGrabPCM, mGrabWheel));
   }
 
   public void testMotor(){
