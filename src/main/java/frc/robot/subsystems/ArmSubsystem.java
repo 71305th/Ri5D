@@ -12,7 +12,7 @@ import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
 
-  private final CANSparkMax m_armMotor = new CANSparkMax(ArmConstants.motorID, MotorType.kBrushless);
+  private final CANSparkMax m_armMotor = new CANSparkMax(ArmConstants.kMotorID, MotorType.kBrushless);
 
   /** Creates a new LufySubsystem. */
   public ArmSubsystem() {

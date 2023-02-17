@@ -14,8 +14,8 @@ import frc.robot.Constants.OIConstants;
 
 public class GrabberWheelSubsystem extends SubsystemBase {
 
-  private final CANSparkMax m_grabberMotor = new CANSparkMax(GrabberConstants.motorID, MotorType.kBrushless);
-  private final Joystick joystick = new Joystick(OIConstants.operatorController);
+  private final CANSparkMax m_grabberMotor = new CANSparkMax(GrabberConstants.kMotorID, MotorType.kBrushless);
+  private final Joystick joystick = new Joystick(OIConstants.kOperatorController);
 
   private boolean lastButtonState = false;
   private boolean state = false;

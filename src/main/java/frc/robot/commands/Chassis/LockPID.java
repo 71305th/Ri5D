@@ -65,8 +65,8 @@ public class LockPID extends CommandBase {
     System.out.println("dL" + distLeft);
     System.out.println("dR" + distRight);
 
-    double LeftOutput = PID(PIDConstants.kP_Lock, PIDConstants.kI_Lock, PIDConstants.kD_Lock, PIDConstants.iLimit_Lock, trueL, 0);
-    double RightOutput = PID(PIDConstants.kP_Lock, PIDConstants.kI_Lock, PIDConstants.kD_Lock, PIDConstants.iLimit_Lock, trueR, 0);
+    double LeftOutput = PID(PIDConstants.kP_Lock, PIDConstants.kI_Lock, PIDConstants.kD_Lock, PIDConstants.kILimit_Lock, trueL, 0);
+    double RightOutput = PID(PIDConstants.kP_Lock, PIDConstants.kI_Lock, PIDConstants.kD_Lock, PIDConstants.kILimit_Lock, trueR, 0);
 
     drive.setLeftSpeed( LeftOutput );
     drive.setRightSpeed( RightOutput );

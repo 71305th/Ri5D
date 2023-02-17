@@ -22,7 +22,6 @@ import frc.robot.commands.Chassis.AutoRotate;
 import frc.robot.commands.Chassis.LockPID;
 import frc.robot.commands.Elevator.OneButtonRunUpDown;
 import frc.robot.commands.Grabber.WheelsTurnAndStop;
-import frc.robot.commands.Image.ApriltagField;
 import frc.robot.commands.Image.CheckCones;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.ArmSubsystem;
@@ -48,8 +47,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
 
   // Joystick
-  private final Joystick driverJoystick = new Joystick(OIConstants.driverController);
-  private final Joystick operatorJoystick = new Joystick(OIConstants.operatorController);
+  private final Joystick driverJoystick = new Joystick(OIConstants.kDriverController);
+  private final Joystick operatorJoystick = new Joystick(OIConstants.kOperatorController);
 
   // Subsystems
   private final DriveSubsystem m_drive = new DriveSubsystem();
@@ -66,39 +65,38 @@ public class RobotContainer {
   private final GrabAndRelease m_grabAndRelease = new GrabAndRelease(m_grabPCM);
   private final WheelsTurnAndStop m_wheelsTurnAndStop = new WheelsTurnAndStop(m_grabWheel);
   private final OneButtonRunUpDown m_oneButtonRunUpDown = new OneButtonRunUpDown(m_elevator);
-  private final ApriltagField m_ApriltagField = new ApriltagField(m_apriltag);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Drive
     m_drive.setDefaultCommand(new RunCommand(() -> {
       m_drive.arcadeDrive(
-        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * DriveConstants.chassisArcadeSpdScaler, 
-        driverJoystick.getRawAxis(OIConstants.rightStick_X) * DriveConstants.chassisArcadeRotScaler);
+        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * DriveConstants.kChassisArcadeSpdScaler, 
+        driverJoystick.getRawAxis(OIConstants.rightStick_X) * DriveConstants.kChassisArcadeRotScaler);
     }, m_drive));
 
 
     // Elevator
     m_elevator.setDefaultCommand(new RunCommand(() -> {
       if (operatorJoystick.getRawAxis(OIConstants.rightStick_Y) < -0.3) {
-        m_elevator.elevatorRunUp(ElevatorConstants.elevatorUpSpeedScaler);
+        m_elevator.elevatorRunUp(ElevatorConstants.kElevatorUpSpeedScaler);
       } else if (operatorJoystick.getRawAxis(OIConstants.rightStick_Y) > 0.3) {
-        m_elevator.elevatorRunDown(ElevatorConstants.elevatorDownSpeedScaler);
+        m_elevator.elevatorRunDown(ElevatorConstants.kElevatorDownSpeedScaler);
       } 
     } , m_elevator));
 
     // Arm
     m_arm.setDefaultCommand(new RunCommand(() -> {
       if(operatorJoystick.getRawAxis(OIConstants.trigger_L) > 0.05){
-        m_arm.run(operatorJoystick.getRawAxis(OIConstants.trigger_L) * ArmConstants.armSpeedScaler);
+        m_arm.run(operatorJoystick.getRawAxis(OIConstants.trigger_L) * ArmConstants.kArmSpeedScaler);
       }else{
-        m_arm.run(-operatorJoystick.getRawAxis(OIConstants.trigger_R) * ArmConstants.armSpeedScaler);
+        m_arm.run(-operatorJoystick.getRawAxis(OIConstants.trigger_R) * ArmConstants.kArmSpeedScaler);
       }
     }, m_arm));
 
     // Elbow
     m_elbow.setDefaultCommand(new RunCommand(() -> {
-      m_elbow.elbowRun(-operatorJoystick.getRawAxis(OIConstants.leftStick_Y) * ElbowConstants.elbowSpeedScaler);
+      m_elbow.elbowRun(-operatorJoystick.getRawAxis(OIConstants.leftStick_Y) * ElbowConstants.kElbowSpeedScaler);
     }, m_elbow));
 
     // Configure the button bindings
@@ -123,8 +121,6 @@ public class RobotContainer {
 
     // make the elevator go up or down in a click
     new JoystickButton(operatorJoystick, OIConstants.Btn_X).onTrue(m_oneButtonRunUpDown);
-
-    new JoystickButton(operatorJoystick, OIConstants.Btn_B).onTrue(m_ApriltagField);
   }
 
   /**
@@ -139,7 +135,6 @@ public class RobotContainer {
 
 
     return new ParallelCommandGroup(
-      new ApriltagField(m_apriltag),
       new CheckCones(m_limelight),
 
       new SequentialCommandGroup( 
@@ -154,7 +149,7 @@ public class RobotContainer {
       new AutoGrabOpen(m_grabPCM, m_grabWheel)
       )
       
-      );
+    );
   }
 
   public void testMotor(){

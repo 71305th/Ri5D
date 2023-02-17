@@ -14,10 +14,10 @@ import frc.robot.Constants.OIConstants;;
 
 public class GrabberPCMSubsystem extends SubsystemBase {
   
-  private final Compressor comp = new Compressor(GrabberConstants.compressorID ,PneumaticsModuleType.CTREPCM);
-  private final DoubleSolenoid DoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, GrabberConstants.ForwardChannel, GrabberConstants.ReverseChannel);
+  private final Compressor comp = new Compressor(GrabberConstants.kCompressorID ,PneumaticsModuleType.CTREPCM);
+  private final DoubleSolenoid DoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, GrabberConstants.kForwardChannel, GrabberConstants.kReverseChannel);
 
-  private final Joystick joystick = new Joystick(OIConstants.operatorController);
+  private final Joystick joystick = new Joystick(OIConstants.kOperatorController);
 
   private boolean state = false;
   private boolean lastButtonState = false;

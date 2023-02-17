@@ -3,7 +3,7 @@ package frc.robot.commands.Image;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.Cones;
+import frc.robot.Constants.ImagineConstants;
 import frc.robot.subsystems.LimelightSubsystem;
 
 public class CheckCones extends CommandBase{
@@ -48,10 +48,10 @@ public class CheckCones extends CommandBase{
 
         tangentCone_1 = Math.abs(Math.tan(limelight.getY_1()*Math.PI/180 + limeLightTheta*Math.PI/180 + Math.PI/2));
         tangentCone_2 = Math.abs(Math.tan(limelight.getY_2()*Math.PI/180 + limeLightTheta*Math.PI/180 + Math.PI/2));
-        cone_2hightTheorectic = Cones.distenceBetweenCones*tangentCone_2 + Cones.conesHight_1*tangentCone_2/tangentCone_1;
+        cone_2hightTheorectic = ImagineConstants.kDistenceBetweenCones*tangentCone_2 + ImagineConstants.kConesHight_1*tangentCone_2/tangentCone_1;
 
         tyErrorSum += (Math.abs(limelight.getY_1() - limelight.getY_2()));
-        heightErrorSum += (Math.abs(cone_2hightTheorectic - Cones.conesHight_2));
+        heightErrorSum += (Math.abs(cone_2hightTheorectic - ImagineConstants.kConesHight_2));
 
 
         if(currentTime - startTime == timeError){
