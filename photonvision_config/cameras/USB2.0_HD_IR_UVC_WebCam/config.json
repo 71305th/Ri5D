@@ -1,0 +1,11 @@
+{
+  "baseName" : "USB2.0 HD IR UVC WebCam",
+  "uniqueName" : "USB2.0_HD_IR_UVC_WebCam",
+  "nickname" : "USB2.0_HD_IR_UVC_WebCam",
+  "FOV" : 70.0,
+  "path" : "\\\\?\\usb#vid_13d3&pid_56cb&mi_00#6&c7efbb4&0&0000#{e5323777-f976-4f5b-9b55-b94699c46e44}\\global",
+  "cameraType" : "UsbCamera",
+  "currentPipelineIndex" : 0,
+  "calibrations" : [ ],
+  "streamIndex" : 0
+}
