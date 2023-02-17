@@ -65,17 +65,17 @@ public class RobotContainer {
     // Drive
     m_drive.setDefaultCommand(new RunCommand(() -> {
       m_drive.arcadeDrive(
-        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * DriveConstants.kChassisArcadeSpdScaler, 
-        driverJoystick.getRawAxis(OIConstants.rightStick_X) * DriveConstants.kChassisArcadeRotScaler);
+        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * DriveConstants.chassisArcadeSpdScaler, 
+        driverJoystick.getRawAxis(OIConstants.rightStick_X) * DriveConstants.chassisArcadeRotScaler);
     }, m_drive));
 
 
     // Elevator
     m_elevator.setDefaultCommand(new RunCommand(() -> {
       if (operatorJoystick.getRawAxis(OIConstants.rightStick_Y) < -0.3) {
-        m_elevator.elevatorRunUp(ElevatorConstants.kElevatorUpSpeedScaler);
+        m_elevator.elevatorRunUp(ElevatorConstants.elevatorUpSpeedScaler);
       } else if (operatorJoystick.getRawAxis(OIConstants.rightStick_Y) > 0.3) {
-        m_elevator.elevatorRunDown(ElevatorConstants.kElevatorDownSpeedScaler);
+        m_elevator.elevatorRunDown(ElevatorConstants.elevatorDownSpeedScaler);
       } 
     } , m_elevator));
 
@@ -95,6 +95,7 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+    m_drive.zeroHeading();
   }
 
   /**
@@ -108,10 +109,10 @@ public class RobotContainer {
     // new JoystickButton(driverJoystick, OIConstants.Btn_B).onTrue(new RunCommand( () -> {m_drive.resetEncoders();}, m_drive));
 
     // make the grabber grab and release
-    new JoystickButton(operatorJoystick, OIConstants.Btn_LB).onTrue(m_grabAndRelease);
+    // new JoystickButton(operatorJoystick, OIConstants.Btn_LB).onTrue(m_grabAndRelease);
 
     // make the wheels on the grabber turn and stop
-    new JoystickButton(operatorJoystick, OIConstants.Btn_RB).onTrue(m_wheelsTurnAndStop);
+    // new JoystickButton(operatorJoystick, OIConstants.Btn_RB).onTrue(m_wheelsTurnAndStop);
 
     // make the elevator go up or down in a click
     new JoystickButton(operatorJoystick, OIConstants.Btn_X).onTrue(m_oneButtonRunUpDown);

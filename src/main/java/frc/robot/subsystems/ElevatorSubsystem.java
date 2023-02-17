@@ -13,17 +13,17 @@ import frc.robot.Constants.ElevatorConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
 
-  private final CANSparkMax m_motorElevatorLeft = new CANSparkMax(ElevatorConstants.kLeftMotorID, MotorType.kBrushless);
-  private final CANSparkMax m_motorElevatorRight = new CANSparkMax(ElevatorConstants.kRightMotorID, MotorType.kBrushless);
-  private final DigitalInput leftUpLimitSwitch = new DigitalInput(ElevatorConstants.kLeftUpChannel);
-  private final DigitalInput leftDownLimitSwitch = new DigitalInput(ElevatorConstants.kLeftDownChannel);
-  private final DigitalInput rightUpLimitSwitch = new DigitalInput(ElevatorConstants.kRightUpChannel);
-  private final DigitalInput rightDownLimitSwitch = new DigitalInput(ElevatorConstants.kRightDownChannel);
+  private final CANSparkMax m_motorElevatorLeft = new CANSparkMax(ElevatorConstants.leftMotorID, MotorType.kBrushless);
+  private final CANSparkMax m_motorElevatorRight = new CANSparkMax(ElevatorConstants.rightMotorID, MotorType.kBrushless);
+  private final DigitalInput leftUpLimitSwitch = new DigitalInput(ElevatorConstants.leftUpChannel);
+  private final DigitalInput leftDownLimitSwitch = new DigitalInput(ElevatorConstants.leftDownChannel);
+  private final DigitalInput rightUpLimitSwitch = new DigitalInput(ElevatorConstants.rightUpChannel);
+  private final DigitalInput rightDownLimitSwitch = new DigitalInput(ElevatorConstants.rightDownChannel);
 
   /** Creates a new ElevatorSubsystem. */
   public ElevatorSubsystem() {
     m_motorElevatorLeft.setInverted(false);
-    m_motorElevatorRight.setInverted(true);
+    m_motorElevatorRight.setInverted(false);
     // m_motorElevatorRight.follow(m_motorElevatorLeft, true);
     m_motorElevatorLeft.follow(m_motorElevatorRight, true);
     m_motorElevatorLeft.getEncoder().setPosition(0);

@@ -15,33 +15,44 @@ import frc.robot.Constants.OIConstants;;
 public class GrabberPCMSubsystem extends SubsystemBase {
   
   private final Compressor comp = new Compressor(GrabberConstants.kCompressorID ,PneumaticsModuleType.CTREPCM);
-  private final DoubleSolenoid DoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, GrabberConstants.kForwardChannel, GrabberConstants.kReverseChannel);
+  
+  private final DoubleSolenoid DoublePCM = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, 3, 2);
 
   private final Joystick joystick = new Joystick(OIConstants.kOperatorController);
 
-  private boolean state = false;
+  public boolean state = false;
   private boolean lastButtonState = false;
 
   /** Creates a new GrabberPCMSubsystem. */
   public GrabberPCMSubsystem() {
     this.state = false;
     this.lastButtonState = false;
+    //this.comp.enableDigital();
     this.comp.disable();
   }
 
   @Override
   public void periodic()
   {
-    // This method will be called once per scheduler run
+    // System.out.println(this.comp.getPressureSwitchValue());
+    // if (!this.comp.getPressureSwitchValue()){
+    //   this.comp.disable();
+      
+    // } else {
+    //   if(!this.comp.isEnabled()){
+    //     this.comp.enableDigital();
+    //   }
+    // }
+    // System.out.println(this.state);
     boolean buttonInput = this.joystick.getRawButtonPressed(OIConstants.Btn_LB);
     if(this.lastButtonState == true && buttonInput == false){
       this.state = !this.state;
     }
     this.lastButtonState = buttonInput;
     if (this.state){
-      this.handOpen();
+      this.DoublePCM.set(DoubleSolenoid.Value.kForward);
     } else {
-      this.handClose();
+      this.DoublePCM.set(DoubleSolenoid.Value.kReverse);
     }
 
   }
@@ -57,9 +68,5 @@ public class GrabberPCMSubsystem extends SubsystemBase {
 
   public void handClose(){
     DoublePCM.set(DoubleSolenoid.Value.kReverse);
-  }
-  
-  public void handStop(){
-    DoublePCM.set(DoubleSolenoid.Value.kOff);
   }
 }

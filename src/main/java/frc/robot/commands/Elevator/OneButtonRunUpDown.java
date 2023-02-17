@@ -34,13 +34,13 @@ public class OneButtonRunUpDown extends CommandBase {
       if(elevatorSubsystem.atUpLimit()){
         elevatorSubsystem.elevatorstop();
       }else{
-        elevatorSubsystem.elevatorRunUp(ElevatorConstants.kElevatorUpSpeedScaler);
+        elevatorSubsystem.elevatorRunUp(ElevatorConstants.elevatorUpSpeedScaler);
       }
     } else {
       if(elevatorSubsystem.atDownLimit()){
         elevatorSubsystem.elevatorstop();
       }else{
-        elevatorSubsystem.elevatorRunDown(ElevatorConstants.kElevatorDownSpeedScaler);
+        elevatorSubsystem.elevatorRunDown(ElevatorConstants.elevatorDownSpeedScaler);
       }
     }
     state = !state;

@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.sensors.CANCoder;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -31,6 +32,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   private final AHRS m_gyro = new AHRS(Port.kMXP);
 
+  //private final CANCoder leftEncoder = new CANCoder(3);
+  //private final CANCoder rightEncoder = new CANCoder(4);
+
   DifferentialDriveOdometry m_odometry = 
     new DifferentialDriveOdometry(m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());
 
@@ -42,15 +46,14 @@ public class DriveSubsystem extends SubsystemBase {
     m_motorRearRight.setInverted(false);
     
     resetEncoders();
-    m_gyro.reset();
+    zeroHeading();
     m_odometry = new DifferentialDriveOdometry(m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-      m_odometry = 
-      new DifferentialDriveOdometry(m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());   
+      m_odometry.update(m_gyro.getRotation2d(), getLeftRelativeDistance(), getRightRelativeDistance());
       SmartDashboard.putNumber("LeftDis", getLeftRelativeDistance());
       SmartDashboard.putNumber("RightDis", getRightRelativeDistance());
       SmartDashboard.putNumber("Heading", getHeading());
@@ -58,6 +61,9 @@ public class DriveSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("PoseY", getPose().getY());
       SmartDashboard.putNumber("LeftVel", getLeftVelocity());
       SmartDashboard.putNumber("RightVel", getRightVelocity());
+
+      //SmartDashboard.putNumber("Left Encoder", leftEncoder.getPosition());
+      //SmartDashboard.putNumber("Right Encoder", rightEncoder.getPosition());
     }
 
   @Override
@@ -73,14 +79,16 @@ public class DriveSubsystem extends SubsystemBase {
     double RLencoderCount = m_motorRearLeft.getEncoder().getPosition();
     double FLencoderCount = m_motorFrontLeft.getEncoder().getPosition();
     double averageCount = (RLencoderCount+FLencoderCount)/2;
-    return averageCount * DriveConstants.kDistancePerPulse;
+    return averageCount * DriveConstants.kWheelCircumference * DriveConstants.kGearRatio;
+    //* DriveConstants.kDistancePerPulse;
   }
 
   public double getRightRelativeDistance() {
     double RRencoderCount = m_motorRearRight.getEncoder().getPosition();
     double FRencoderCount = m_motorFrontRight.getEncoder().getPosition();
     double averageCount = (RRencoderCount+FRencoderCount)/2;
-    return averageCount * DriveConstants.kDistancePerPulse;
+    return averageCount * DriveConstants.kWheelCircumference *DriveConstants.kGearRatio;
+    // * DriveConstants.kDistancePerPulse;
   }
 /*
   public double getleftAbsoluteDistance() {
@@ -173,6 +181,7 @@ public class DriveSubsystem extends SubsystemBase {
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
     m_gyro.reset();
+    m_gyro.zeroYaw();
   }
 
   /**
@@ -181,7 +190,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the robot's heading in degrees, from -180 to 180
    */
   public double getHeading() {
-    return m_gyro.getRotation2d().getDegrees();
+    return m_gyro.getYaw();
   }
 
   /**

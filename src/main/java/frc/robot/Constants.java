@@ -37,8 +37,8 @@ public final class Constants {
         public static final double kEncoderCPR = 42;
         public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
         public static final double kWheelCircumference = kWheelDiameterMeters * Math.PI;
-        public static final double kGearRatio = 25 / 12;
-        public static final double kDistancePerPulse = kWheelCircumference / kEncoderCPR / kGearRatio;
+        public static final double kGearRatio = 0.48 * 0.25;
+        public static final double kDistancePerPulse = kWheelCircumference * (kEncoderCPR * kGearRatio) * 100;
         // distancePerPulse = wheelPerimeter / EncoderCPR
 
         // Trajectory Constraints
@@ -50,9 +50,9 @@ public final class Constants {
         public static final double kTrackWidthmeters = 0.595;
         public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
                 kTrackWidthmeters);
-        public static final double kChassisArcadeSpdScaler = 1;
-        public static final double kChassisArcadeRotScaler = 1;
-        public static final double kChassisTankScaler = 0.5;
+        public static final double chassisArcadeSpdScaler = 0.7;
+        public static final double chassisArcadeRotScaler = 0.6;
+        public static final double chassisTankScaler = 0.5;
     }
 
     public static final class PIDConstants {
@@ -99,21 +99,21 @@ public final class Constants {
     }
 
     public static final class GrabberConstants {
-        public static final int kCompressorID = 0;
-        public static final int kForwardChannel = 6;
-        public static final int kReverseChannel = 7;
-        public static final int kMotorID = 15;
+        public static final int compressorID = 0;
+        public static final int ForwardChannel = 2;
+        public static final int ReverseChannel = 3;
+        public static final int motorID = 15;
     }
 
     public final class ElevatorConstants {
-        public static final int kLeftMotorID = 11;
-        public static final int kRightMotorID = 8;
-        public static final double kElevatorUpSpeedScaler = 0.5;
-        public static final double kElevatorDownSpeedScaler = 0.3;
-        public static final int kLeftUpChannel = 0;
-        public static final int kLeftDownChannel = 1;
-        public static final int kRightUpChannel = 2;
-        public static final int kRightDownChannel = 3;
+        public static final int leftMotorID = 9;
+        public static final int rightMotorID = 8;
+        public static final double elevatorUpSpeedScaler = 0.5;
+        public static final double elevatorDownSpeedScaler = 0.3;
+        public static final int leftUpChannel = 0;
+        public static final int leftDownChannel = 1;
+        public static final int rightUpChannel = 2;
+        public static final int rightDownChannel = 3;
     }
 
     public static final class ApriltagConstants {

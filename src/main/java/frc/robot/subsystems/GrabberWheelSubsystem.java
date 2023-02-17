@@ -14,7 +14,7 @@ import frc.robot.Constants.OIConstants;
 
 public class GrabberWheelSubsystem extends SubsystemBase {
 
-  private final CANSparkMax m_grabberMotor = new CANSparkMax(GrabberConstants.kMotorID, MotorType.kBrushless);
+  private final CANSparkMax m_grabberMotor = new CANSparkMax(GrabberConstants.motorID, MotorType.kBrushless);
   private final Joystick joystick = new Joystick(OIConstants.kOperatorController);
 
   private boolean lastButtonState = false;
@@ -30,16 +30,15 @@ public class GrabberWheelSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
     boolean buttonInput = this.joystick.getRawButtonPressed(OIConstants.Btn_RB);
     if(this.lastButtonState == true && buttonInput == false){
       this.state = !this.state;
     }
     this.lastButtonState = buttonInput;
     if (this.state){
-      this.rollRun(0.05);
+      this.m_grabberMotor.set(0.15);
     } else {
-      this.rollStop();
+      this.m_grabberMotor.set(0);
     }
   }
 
