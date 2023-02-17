@@ -47,57 +47,57 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
 
   // Joystick
-  private final Joystick driverJoystick = new Joystick(OIConstants.kDriverController);
-  private final Joystick operatorJoystick = new Joystick(OIConstants.kOperatorController);
+  private final Joystick mDriverJoystick = new Joystick(OIConstants.kDriverController);
+  private final Joystick mOperatorJoystick = new Joystick(OIConstants.kOperatorController);
 
   // Subsystems
-  private final DriveSubsystem m_drive = new DriveSubsystem();
-  private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
-  private final ArmSubsystem m_arm = new ArmSubsystem();
-  private final ElbowSubsystem m_elbow = new ElbowSubsystem();
-  private final GrabberPCMSubsystem m_grabPCM = new GrabberPCMSubsystem();
-  private final GrabberWheelSubsystem m_grabWheel = new GrabberWheelSubsystem();
-  private final ApriltagSubsystem m_apriltag = new ApriltagSubsystem();
-  private final LimelightSubsystem m_limelight = new LimelightSubsystem();
+  private final DriveSubsystem mDrive = new DriveSubsystem();
+  private final ElevatorSubsystem mElevator = new ElevatorSubsystem();
+  private final ArmSubsystem mArm = new ArmSubsystem();
+  private final ElbowSubsystem mElbow = new ElbowSubsystem();
+  private final GrabberPCMSubsystem mGrabPCM = new GrabberPCMSubsystem();
+  private final GrabberWheelSubsystem mGrabWheel = new GrabberWheelSubsystem();
+  private final ApriltagSubsystem mApriltag = new ApriltagSubsystem();
+  private final LimelightSubsystem mLimelight = new LimelightSubsystem();
 
   // Commands
-  private final LockPID m_setPoint = new LockPID(m_drive);
-  private final GrabAndRelease m_grabAndRelease = new GrabAndRelease(m_grabPCM);
-  private final WheelsTurnAndStop m_wheelsTurnAndStop = new WheelsTurnAndStop(m_grabWheel);
-  private final OneButtonRunUpDown m_oneButtonRunUpDown = new OneButtonRunUpDown(m_elevator);
+  private final LockPID mSetPoint = new LockPID(mDrive);
+  private final GrabAndRelease mGrabAndRelease = new GrabAndRelease(mGrabPCM);
+  private final WheelsTurnAndStop mWheelsTurnAndStop = new WheelsTurnAndStop(mGrabWheel);
+  private final OneButtonRunUpDown mOneButtonRunUpDown = new OneButtonRunUpDown(mElevator);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Drive
-    m_drive.setDefaultCommand(new RunCommand(() -> {
-      m_drive.arcadeDrive(
-        -driverJoystick.getRawAxis(OIConstants.leftStick_Y) * DriveConstants.kChassisArcadeSpdScaler, 
-        driverJoystick.getRawAxis(OIConstants.rightStick_X) * DriveConstants.kChassisArcadeRotScaler);
-    }, m_drive));
+    mDrive.setDefaultCommand(new RunCommand(() -> {
+      mDrive.arcadeDrive(
+        -mDriverJoystick.getRawAxis(OIConstants.leftStick_Y) * DriveConstants.kChassisArcadeSpdScaler, 
+        mDriverJoystick.getRawAxis(OIConstants.rightStick_X) * DriveConstants.kChassisArcadeRotScaler);
+    }, mDrive));
 
 
     // Elevator
-    m_elevator.setDefaultCommand(new RunCommand(() -> {
-      if (operatorJoystick.getRawAxis(OIConstants.rightStick_Y) < -0.3) {
-        m_elevator.elevatorRunUp(ElevatorConstants.kElevatorUpSpeedScaler);
-      } else if (operatorJoystick.getRawAxis(OIConstants.rightStick_Y) > 0.3) {
-        m_elevator.elevatorRunDown(ElevatorConstants.kElevatorDownSpeedScaler);
+    mElevator.setDefaultCommand(new RunCommand(() -> {
+      if ( mOperatorJoystick.getRawAxis(OIConstants.rightStick_Y) < -0.3) {
+        mElevator.elevatorRunUp(ElevatorConstants.kElevatorUpSpeedScaler);
+      } else if ( mOperatorJoystick.getRawAxis(OIConstants.rightStick_Y) > 0.3) {
+        mElevator.elevatorRunDown(ElevatorConstants.kElevatorDownSpeedScaler);
       } 
-    } , m_elevator));
+    } , mElevator));
 
     // Arm
-    m_arm.setDefaultCommand(new RunCommand(() -> {
-      if(operatorJoystick.getRawAxis(OIConstants.trigger_L) > 0.05){
-        m_arm.run(operatorJoystick.getRawAxis(OIConstants.trigger_L) * ArmConstants.kArmSpeedScaler);
+    mArm.setDefaultCommand(new RunCommand(() -> {
+      if( mOperatorJoystick.getRawAxis(OIConstants.trigger_L) > 0.05){
+        mArm.run( mOperatorJoystick.getRawAxis(OIConstants.trigger_L) * ArmConstants.kArmSpeedScaler);
       }else{
-        m_arm.run(-operatorJoystick.getRawAxis(OIConstants.trigger_R) * ArmConstants.kArmSpeedScaler);
+        mArm.run(-mOperatorJoystick.getRawAxis(OIConstants.trigger_R) * ArmConstants.kArmSpeedScaler);
       }
-    }, m_arm));
+    }, mArm));
 
     // Elbow
-    m_elbow.setDefaultCommand(new RunCommand(() -> {
-      m_elbow.elbowRun(-operatorJoystick.getRawAxis(OIConstants.leftStick_Y) * ElbowConstants.kElbowSpeedScaler);
-    }, m_elbow));
+    mElbow.setDefaultCommand(new RunCommand(() -> {
+      mElbow.elbowRun( -mOperatorJoystick.getRawAxis(OIConstants.leftStick_Y) * ElbowConstants.kElbowSpeedScaler );
+    }, mElbow));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -114,13 +114,13 @@ public class RobotContainer {
     // new JoystickButton(driverJoystick, OIConstants.Btn_B).onTrue(new RunCommand( () -> {m_drive.resetEncoders();}, m_drive));
 
     // make the grabber grab and release
-    new JoystickButton(operatorJoystick, OIConstants.Btn_LB).onTrue(m_grabAndRelease);
+    new JoystickButton(mOperatorJoystick, OIConstants.Btn_LB).onTrue(mGrabAndRelease);
 
     // make the wheels on the grabber turn and stop
-    new JoystickButton(operatorJoystick, OIConstants.Btn_RB).onTrue(m_wheelsTurnAndStop);
+    new JoystickButton(mOperatorJoystick, OIConstants.Btn_RB).onTrue(mWheelsTurnAndStop);
 
     // make the elevator go up or down in a click
-    new JoystickButton(operatorJoystick, OIConstants.Btn_X).onTrue(m_oneButtonRunUpDown);
+    new JoystickButton(mOperatorJoystick, OIConstants.Btn_X).onTrue(mOneButtonRunUpDown);
   }
 
   /**
@@ -135,24 +135,24 @@ public class RobotContainer {
 
 
     return new ParallelCommandGroup(
-      new CheckCones(m_limelight),
+      new CheckCones(mLimelight),
 
       new SequentialCommandGroup( 
-      new AutoMove(m_drive, 5),
-      new AutoGrabOpen(m_grabPCM, m_grabWheel),
-      new AutoElbowMove(m_elbow, 0.5),
-      new AutoGrabClose(m_grabPCM, m_grabWheel),
-      new AutoElbowMove(m_elbow, 0),
-      new AutoMove(m_drive, 0),
-      new AutoRotate(m_drive, -180),
-      new AutoElbowMove(m_elbow, 0.2),
-      new AutoGrabOpen(m_grabPCM, m_grabWheel)
+      new AutoMove(mDrive, 5),
+      new AutoGrabOpen(mGrabPCM, mGrabWheel),
+      new AutoElbowMove(mElbow, 0.5),
+      new AutoGrabClose(mGrabPCM, mGrabWheel),
+      new AutoElbowMove(mElbow, 0),
+      new AutoMove(mDrive, 0),
+      new AutoRotate(mDrive, -180),
+      new AutoElbowMove(mElbow, 0.2),
+      new AutoGrabOpen(mGrabPCM, mGrabWheel)
       )
       
     );
   }
 
   public void testMotor(){
-    this.m_drive.testMotor();
+    this.mDrive.testMotor();
   }
 }
