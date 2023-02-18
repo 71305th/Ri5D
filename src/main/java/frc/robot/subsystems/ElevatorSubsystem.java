@@ -32,7 +32,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public void set(double speed){
     if(!this.atLimit())elevator.set(speed);
-    elevator.set(0);
+    else elevator.set(0);
   }
   
   public void stop(){
@@ -73,18 +73,18 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public boolean atLimit(){
-    if(!(atDownLimit() || atUpLimit()))return false;
-    else return true;
+    if (atUpLimit() || atDownLimit()) return true;
+    else return false;
   }
 
   public boolean atUpLimit(){
-   if(!(this.getLeftUpLimit() || this.getRightUpLimit() == false)) return false;
-   else return true;
+    if (this.getLeftUpLimit() || this.getRightUpLimit()) return true;
+    else return false;
   }
 
   public boolean atDownLimit(){
-    if(!(this.getLeftDownLimit() || this.getRightDownLimit())) return false;
-    else return true;
+    if (this.getLeftDownLimit() || this.getRightDownLimit()) return true;
+    else return false;
   }
   
   @Override

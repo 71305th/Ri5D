@@ -20,7 +20,7 @@ import frc.robot.commands.Grabber.WheelIntake;
 import frc.robot.commands.Chassis.AutoElbowMove;
 import frc.robot.commands.Chassis.AutoMove;
 import frc.robot.commands.Chassis.AutoRotate;
-import frc.robot.commands.Chassis.LockPID;
+//import frc.robot.commands.Chassis.LockPID;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -53,7 +53,7 @@ public class RobotContainer {
   private final GrabberWheelSubsystem m_grabWheel = new GrabberWheelSubsystem();
 
   // Commands
-  private final LockPID m_setPoint = new LockPID(m_drive);
+  //private final LockPID m_setPoint = new LockPID(m_drive);
   private final GrabAndRelease m_grabAndRelease = new GrabAndRelease(m_grabPCM);
 
   // PID Controller
