@@ -60,6 +60,7 @@ public class GrabberPCMSubsystem extends SubsystemBase {
   public void enablecompressor(){
     comp.enableDigital();
     DoublePCM.isFwdSolenoidDisabled();
+    comp.enableAnalog(115, 120);
   }
 
   public void handOpen(){
