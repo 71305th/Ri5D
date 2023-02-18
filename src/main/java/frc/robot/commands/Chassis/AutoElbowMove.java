@@ -7,7 +7,7 @@ import frc.robot.subsystems.ElbowSubsystem;
 public class AutoElbowMove  extends CommandBase{
     private final ElbowSubsystem elbow;
     
-    private PIDController pidCon = new PIDController(0, 0, 0);
+    private PIDController pidCon = new PIDController(0.05, 0, 0);
     
     private double targetPos;
 
@@ -31,7 +31,7 @@ public class AutoElbowMove  extends CommandBase{
 
     public boolean isFinished(){
         if(Math.abs(this.targetPos-elbow.getArmAngPos())<0.05){
-            this.elbow.stop();;
+            this.elbow.stop();
             return true;
         }
         return false;

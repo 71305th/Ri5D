@@ -200,4 +200,12 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return -m_gyro.getRate();
   }
+
+
+  public double getEncoderPos() {
+    return (m_motorFrontLeft.getEncoder().getPosition() + 
+    m_motorFrontRight.getEncoder().getPosition() + 
+    m_motorRearLeft.getEncoder().getPosition() + 
+    m_motorRearRight.getEncoder().getPosition()) /4;
+  }
 }

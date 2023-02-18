@@ -21,7 +21,7 @@ public class AutoMove  extends CommandBase{
     }
 
     public void execute(){
-        double output = pidCon.calculate(this.drive.getPose().getX(), this.targetPos);
+        double output = pidCon.calculate(this.drive.getEncoderPos(), this.targetPos);
         this.drive.arcadeDrive(output, 0);
     }
 
@@ -30,8 +30,7 @@ public class AutoMove  extends CommandBase{
     }
 
     public boolean isFinished(){
-        if(Math.abs(this.targetPos-this.drive.getPose().getX())<0.05){
-            this.drive.arcadeDrive(0, 0);
+        if(Math.abs(this.targetPos-this.drive.getEncoderPos())<0.05){
             return true;
         }
         return false;

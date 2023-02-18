@@ -32,6 +32,10 @@ public class ArmSubsystem extends SubsystemBase {
     m_armMotor.getEncoder().setPosition(0);
   }
 
+  public double getEncoderPos() {
+    return m_armMotor.getEncoder().getPosition();
+  }
+
   @Override
   public void periodic() {}
 

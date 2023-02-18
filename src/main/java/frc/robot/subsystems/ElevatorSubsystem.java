@@ -73,8 +73,8 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public boolean atLimit(){
-    if (atUpLimit() || atDownLimit()) return true;
-    else return false;
+    if(!(atDownLimit() || atUpLimit()))return false;
+    else return true;
   }
 
   public boolean atUpLimit(){

@@ -12,15 +12,20 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ElbowConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.Chassis.AutoArmMove;
+import frc.robot.commands.Chassis.AutoElbowMove;
+import frc.robot.commands.Chassis.AutoElevatorMove;
+import frc.robot.commands.Chassis.AutoMove;
+import frc.robot.commands.Chassis.AutoWheelSwitch;
 import frc.robot.commands.Grabber.AutoGrabClose;
 import frc.robot.commands.Grabber.AutoGrabOpen;
 import frc.robot.commands.Grabber.GrabAndRelease;
 import frc.robot.commands.Grabber.WheelEject;
 import frc.robot.commands.Grabber.WheelIntake;
-import frc.robot.commands.Chassis.AutoElbowMove;
-import frc.robot.commands.Chassis.AutoMove;
-import frc.robot.commands.Chassis.AutoRotate;
-//import frc.robot.commands.Chassis.LockPID;
+
+
+import frc.robot.commands.Grabber.WheelsTurnAndStop;
+
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -28,6 +33,7 @@ import frc.robot.subsystems.ElbowSubsystem;
 import frc.robot.subsystems.GrabberPCMSubsystem;
 import frc.robot.subsystems.GrabberWheelSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -107,16 +113,7 @@ public class RobotContainer {
     m_drive.zeroHeading();
   }
 
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
   private void configureButtonBindings() {
-    // new JoystickButton(driverJoystick, OIConstants.Btn_A).onTrue(m_setPoint);
-    // new JoystickButton(driverJoystick, OIConstants.Btn_B).onTrue(new RunCommand( () -> {m_drive.resetEncoders();}, m_drive));
-
     // make the grabber grab and release
     new JoystickButton(operatorJoystick, OIConstants.Btn_LB).onTrue(m_grabAndRelease);
 
@@ -130,26 +127,33 @@ public class RobotContainer {
     // new JoystickButton(operatorJoystick, OIConstants.Btn_X).onTrue(m_oneButtonRunUpDown); 已在Subsystem中
   }
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
-    // return new SequentialCommandGroup(
-    //   new PathFollowingRamsete(m_drive, "New Path", true), 
-    //   m_setPoint);
-    return new SequentialCommandGroup(
-      new AutoMove(m_drive, 5),
-      new AutoGrabOpen(m_grabPCM, m_grabWheel),
-      new AutoElbowMove(m_elbow, 0.5),
-      new AutoGrabClose(m_grabPCM, m_grabWheel),
-      new AutoElbowMove(m_elbow, 0),
-      new AutoMove(m_drive, 0),
-      new AutoRotate(m_drive, -180),
-      new AutoElbowMove(m_elbow, 0.2),
-      new AutoGrabOpen(m_grabPCM, m_grabWheel)
-    );
+    return 
+      new SequentialCommandGroup(
+        new ParallelCommandGroup(
+          new AutoWheelSwitch(m_grabWheel, 1, 1),
+          new AutoElbowMove(m_elbow, 0.5),
+          new AutoElevatorMove(m_elevator, 0),
+          new AutoArmMove(m_arm, 0)
+        ),
+        new AutoWheelSwitch(m_grabWheel, -1, 1),
+        new ParallelCommandGroup(
+          new AutoWheelSwitch(m_grabWheel, 1, 1),
+          new AutoMove(m_drive, 5),
+          new AutoElbowMove(m_elbow, 0.5),
+          new AutoElevatorMove(m_elevator, 0),
+          new AutoArmMove(m_arm, 0)
+        ),
+        new ParallelCommandGroup(
+          new AutoWheelSwitch(m_grabWheel, 1, 1),
+          new AutoMove(m_drive, 5),
+          new AutoElbowMove(m_elbow, 0.5),
+          new AutoElevatorMove(m_elevator, 0),
+          new AutoArmMove(m_arm, 0),
+          new WheelsTurnAndStop(m_grabWheel)
+        ),
+        new AutoWheelSwitch(m_grabWheel, -1, 1)
+      );
   }
 
   public void testMotor(){
