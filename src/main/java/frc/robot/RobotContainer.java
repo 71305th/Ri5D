@@ -5,9 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ElbowConstants;
@@ -17,8 +15,6 @@ import frc.robot.commands.Chassis.AutoElbowMove;
 import frc.robot.commands.Chassis.AutoElevatorMove;
 import frc.robot.commands.Chassis.AutoMove;
 import frc.robot.commands.Chassis.AutoWheelSwitch;
-import frc.robot.commands.Grabber.AutoGrabClose;
-import frc.robot.commands.Grabber.AutoGrabOpen;
 import frc.robot.commands.Grabber.GrabAndRelease;
 import frc.robot.commands.Grabber.WheelEject;
 import frc.robot.commands.Grabber.WheelIntake;

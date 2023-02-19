@@ -14,10 +14,8 @@ public class PID {
     }
 
     public double calculate (double error){
-        i = (Math.abs(error) <= windup) ? i += error : 0;
-        double iOut = i * kI;
-        iOut = (iOut >= limit) ? limit : iOut;
-        iOut = (iOut <= -limit) ? -limit : iOut;
+        if (Math.abs(error) <= windup) i += error; else i= 0;
+        double iOut = MathUtility.clamp(i * kI, -limit, limit);
         d = error - lastError;
         lastError = error;
         output = (error * kP) + iOut + (d * kD);
